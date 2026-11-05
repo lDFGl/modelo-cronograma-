@@ -400,6 +400,12 @@ document.addEventListener("click",event=>{
   if(action==="backup"){const choice=confirm("OK para exportar backup JSON. Cancelar para restaurar um backup existente.");if(choice)exportBackup();else $("#restore-file").click();}
   if(action==="about"){alert("Sistema Executivo de Gestão de Cronogramas FG — Fase 1.\n\nOs dados são armazenados localmente no navegador. Não há sincronização, login ou banco de dados nesta versão. Exporte backups regularmente.");}
 });
+$("#program-month").addEventListener("change",()=>{
+  const month=$("#program-month").value;
+  const work=works.find(item=>item.id===$("#work-id").value);
+  $("#program-month").dataset.clearMonth="";
+  $("#clear-month-mark").disabled=!(month&&work?.months?.[month]);
+});
 $("#work-form").addEventListener("submit",saveWork);
 ["filter-area","filter-year","filter-status","search-work"].forEach(id=>$("#"+id).addEventListener("input",renderSchedules));
 $("#timeline-year")?.addEventListener("change",event=>{timelineYear=event.target.value;renderTimeline();});
