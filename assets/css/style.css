@@ -478,3 +478,16 @@ body{font-size:15px}
   .timeline-structured-table.year-2027-sheet{min-width:1424px !important}
   .timeline-structured-table.general-sheet{min-width:2952px !important}
 }
+
+
+/* Barra horizontal flutuante e sincronizada com a tabela */
+.timeline-floating-scrollbar{
+  position:fixed;left:10px;bottom:12px;width:calc(100vw - 20px);height:20px;
+  overflow-x:auto;overflow-y:hidden;z-index:1200;display:none;
+  border:1px solid #9eb7be;border-radius:8px;background:rgba(230,239,242,.97);
+  box-shadow:0 3px 14px rgba(14,47,58,.22);scrollbar-color:#315f6c #d9e5e8;
+  scrollbar-width:auto;overscroll-behavior-x:contain;
+}
+.timeline-floating-scrollbar.is-visible{display:block}
+.timeline-floating-scrollbar-track{height:1px;min-width:100%;pointer-events:none}
+@media(max-width:700px){.timeline-floating-scrollbar{bottom:8px;height:18px}}
