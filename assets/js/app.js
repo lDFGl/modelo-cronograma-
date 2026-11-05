@@ -336,11 +336,12 @@ function rescheduleWork(id){
   const existing=work.months[target];
   if(existing&&existing!=="-"&&!confirm("Já existe uma marcação em "+monthLabel(target)+". Deseja substituí-la por Replanejado (R)?"))return;
   if(!confirm("Reagendar \""+work.title+"\" de "+monthLabel(from)+" para "+monthLabel(target)+"? O registro será mantido e o mês de origem ficará como Sem atividade (−)."))return;
+  const previousMark=work.months[from];
   work.months[from]="-";
   work.months[target]="R";
   work.status="replanejado";
   work.rescheduleHistory=work.rescheduleHistory||[];
-  work.rescheduleHistory.push({from,to:target,previousMark:work.months[from],date:new Date().toISOString()});
+  work.rescheduleHistory.push({from,to:target,previousMark,date:new Date().toISOString()});
   persist();populateAreaFilter();renderAll();
   showToast("Trabalho reagendado sem criar um novo cadastro.");
 }
