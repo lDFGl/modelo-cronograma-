@@ -200,3 +200,11 @@ body{font-size:15px}
 /* Contraste reforçado para o cabeçalho de Análises da Alta Direção (AR/AD) */
 .timeline-group-title.priority-high{background:#102f3a!important;color:#fff!important;border-left:5px solid #071e26!important;border-radius:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 4px 10px rgba(7,30,38,.22);}
 .timeline-group-title.priority-high .group-count{color:#e3eef1!important;background:rgba(255,255,255,.14);padding:3px 9px;border-radius:20px;}
+
+
+/* Ação para remover somente a marcação mensal selecionada */
+.clear-mark-field{display:flex;flex-direction:column;align-items:flex-start;gap:6px;}
+.clear-mark-field small{font-size:10px;color:#71858c;line-height:1.4;}
+.btn-danger-soft{background:#fff0ef;border:1px solid #e7c3c0;color:#9c403a;padding:10px 13px;font:700 12px "DM Sans",sans-serif;border-radius:6px;cursor:pointer;}
+.btn-danger-soft:hover:not(:disabled){background:#f8ddda;border-color:#d99a95;}
+.btn-danger-soft:disabled{opacity:.45;cursor:not-allowed;}
