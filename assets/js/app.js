@@ -62,11 +62,11 @@ function buildInitialData(data){
 }
 async function initialize(){
   try{
-    const response = await fetch("data/historico.json");
+    const response = await fetch("data/historico.json?v=20261105-3",{cache:"no-store"});
     if(!response.ok) throw new Error("Não foi possível carregar o histórico.");
     sourceData = await response.json();
   }catch(error){
-    sourceData = {legacy2023:[],schedule2025_2027:[],schedule2027:[],legend:{}};
+    sourceData = {schedule2025_2027:[],schedule2027:[],legend:{}};
     showToast("Não foi possível carregar o histórico de origem. Verifique a publicação do Pages.");
   }
   const initial = buildInitialData(sourceData);
@@ -175,7 +175,7 @@ function renderTimeline(){
   const unplannedHtml=unplanned.length?'<section class="timeline-group"><div class="timeline-group-title">SEM PROGRAMAÇÃO MENSAL<span class="group-count">'+unplanned.length+' trabalho(s)</span></div><div class="timeline-unplanned-list">'+unplanned.map(w=>'<div class="timeline-unplanned-row"><div><b>'+escapeHtml(w.title)+'</b><small>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</small></div><button type="button" class="btn btn-outline" data-edit="'+escapeHtml(w.id)+'">Editar</button></div>').join("")+'</div></section>':"";
   board.innerHTML=(sections||"")+(unplannedHtml||"")||'<section class="timeline-group"><div class="timeline-empty">Nenhum serviço encontrado para o filtro selecionado.</div></section>';
 }
-function renderAll(){renderDashboard();renderTimeline();renderSchedules();renderHistory();}
+function renderAll(){renderDashboard();renderTimeline();renderSchedules();}
 function renderDashboard(){
   const total=works.length;
   const count=s=>works.filter(w=>w.status===s).length;
@@ -313,11 +313,6 @@ function shiftCalendarMonth(delta){
   $("#calendar-month").value=String(month).padStart(2,"0");renderCalendar();
 }
 
-function renderHistory(){
-  const legacy=sourceData?.legacy2023||[];
-  $("#history-count").textContent=works.filter(w=>w.source).length+legacy.reduce((n,x)=>n+x.stages.length,0);
-  $("#legacy-list").innerHTML=legacy.map(item=>'<article class="legacy-card"><b>'+escapeHtml(item.area)+'</b><small>'+escapeHtml(item.unit)+' · '+item.year+'</small><ol>'+item.stages.map(s=>'<li>'+escapeHtml(s)+'</li>').join("")+'</ol><p>'+escapeHtml(item.note)+'</p></article>').join("");
-}
 function openModal(work=null, monthKey=""){
   $("#work-form").reset(); $("#work-id").value=work?.id||"";
   $("#modal-title").textContent=work?"Editar trabalho":"Novo trabalho";
