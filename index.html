@@ -19,6 +19,7 @@
       <nav class="main-nav" aria-label="Navegação principal">
         <button class="nav-link active" data-view="dashboard"><span>▦</span> Painel executivo</button>
         <button class="nav-link" data-view="schedules"><span>▤</span> Cronogramas por área</button>
+        <button class="nav-link" data-view="calendar"><span>▦</span> Calendário</button>
         <button class="nav-link" data-view="history"><span>◷</span> Histórico importado</button>
       </nav>
       <div class="sidebar-bottom">
@@ -44,6 +45,20 @@
         <div class="panel filter-panel"><div class="filter-row"><label class="filter-field"><span>Área</span><select id="filter-area"><option value="">Todas as áreas</option></select></label><label class="filter-field"><span>Ano</span><select id="filter-year"><option value="">Todos os anos</option><option>2023</option><option>2025</option><option>2026</option><option>2027</option></select></label><label class="filter-field"><span>Status</span><select id="filter-status"><option value="">Todos</option><option value="planejamento">Em planejamento</option><option value="andamento">Em andamento</option><option value="concluido">Concluído</option><option value="replanejado">Replanejado</option><option value="demanda">Demanda da alta gestão</option><option value="novo">Novo / não iniciado</option></select></label><label class="filter-field search-field"><span>Buscar trabalho</span><input id="search-work" type="search" placeholder="Nome, código ou tipo..."></label></div></div>
         <div class="schedule-heading"><div><h2 id="schedule-area-title">Todos os trabalhos</h2><p id="schedule-count"></p></div><div class="schedule-actions"><button class="btn btn-outline" id="export-csv">Exportar CSV</button><button class="btn btn-primary" id="new-work-2">＋ Adicionar trabalho</button></div></div>
         <div id="schedule-list" class="schedule-list"></div>
+      </section>
+      <section id="calendar-view" class="view">
+        <div class="panel calendar-toolbar">
+          <label class="filter-field"><span>Ano</span><select id="calendar-year"></select></label>
+          <label class="filter-field"><span>Mês</span><select id="calendar-month"></select></label>
+          <label class="filter-field"><span>Área</span><select id="calendar-area"><option value="">Todas as áreas</option></select></label>
+          <label class="calendar-check"><input type="checkbox" id="calendar-future-only" checked> Somente programações futuras</label>
+          <div class="calendar-nav"><button class="btn btn-outline" id="calendar-prev" type="button">← Anterior</button><button class="btn btn-outline" id="calendar-next" type="button">Próximo →</button></div>
+        </div>
+        <div class="calendar-layout">
+          <article class="panel calendar-panel"><div class="calendar-heading"><div><span class="panel-tag">VISÃO MENSAL</span><h2 id="calendar-title">Calendário</h2><p id="calendar-summary"></p></div></div><div class="calendar-weekdays"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div><div id="calendar-grid" class="calendar-grid"></div></article>
+          <article class="panel calendar-events-panel"><div class="panel-head"><div><h2>Programações do mês</h2><p id="calendar-events-count">Compromissos e atividades</p></div></div><div id="calendar-events"></div></article>
+        </div>
+        <div class="panel calendar-legend"><b>Como interpretar:</b> registros importados da planilha indicam somente o mês de referência, sem dia específico. Novos trabalhos cadastrados com início e término previstos são apresentados com datas exatas.</div>
       </section>
       <section id="history-view" class="view">
         <div class="panel history-intro"><div><span class="panel-tag">FONTE ORIGINAL</span><h2>Histórico preservado da planilha</h2><p>Os cronogramas de 2023, 2025, 2026 e 2027 foram importados como referência inicial. Os registros históricos permanecem consultáveis e podem ser editados sem alterar o arquivo de origem.</p></div><div class="history-count"><strong id="history-count">—</strong><span>registros históricos</span></div></div>
