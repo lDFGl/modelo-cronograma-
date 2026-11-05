@@ -18,7 +18,7 @@
       <div class="side-label">GESTÃO</div>
       <nav class="main-nav" aria-label="Navegação principal">
         <button class="nav-link active" data-view="dashboard"><span>▦</span> Painel executivo</button>
-        <button class="nav-link" data-view="schedules"><span>▤</span> Cronogramas por área</button>
+        <button class="nav-link" data-view="schedules"><span>▤</span> Serviços e acompanhamento</button>
         <button class="nav-link" data-view="calendar"><span>▦</span> Calendário</button>
         <button class="nav-link" data-view="history"><span>◷</span> Histórico importado</button>
       </nav>
@@ -44,7 +44,7 @@
       <section id="schedules-view" class="view">
         <div class="panel filter-panel"><div class="filter-row"><label class="filter-field"><span>Área</span><select id="filter-area"><option value="">Todas as áreas</option></select></label><label class="filter-field"><span>Ano</span><select id="filter-year"><option value="">Todos os anos</option><option>2023</option><option>2025</option><option>2026</option><option>2027</option></select></label><label class="filter-field"><span>Status</span><select id="filter-status"><option value="">Todos</option><option value="planejamento">Em planejamento</option><option value="andamento">Em andamento</option><option value="concluido">Concluído</option><option value="replanejado">Replanejado</option><option value="demanda">Demanda da alta gestão</option><option value="novo">Novo / não iniciado</option></select></label><label class="filter-field search-field"><span>Buscar trabalho</span><input id="search-work" type="search" placeholder="Nome, código ou tipo..."></label></div></div>
         <div class="schedule-heading"><div><h2 id="schedule-area-title">Todos os trabalhos</h2><p id="schedule-count"></p></div><div class="schedule-actions"><button class="btn btn-outline" id="export-csv">Exportar CSV</button><button class="btn btn-primary" id="new-work-2">＋ Adicionar trabalho</button></div></div>
-        <div id="schedule-list" class="schedule-list"></div>
+        <div class="work-overview"><div class="work-overview-head"><div><h3>Acompanhamento dos serviços</h3><p>Visualização consolidada dos serviços realizados e programados.</p></div><div id="work-overview-count" class="overview-count"></div></div><div class="work-tabs" role="group" aria-label="Filtrar situação dos serviços"><button type="button" class="work-tab active" data-work-filter="all">Todos</button><button type="button" class="work-tab" data-work-filter="done">Realizados</button><button type="button" class="work-tab" data-work-filter="active">Em andamento</button><button type="button" class="work-tab" data-work-filter="future">A realizar</button></div><div class="table-scroll"><table class="work-table"><thead><tr><th>Serviço / trabalho</th><th>Área</th><th>Programação mensal</th><th>Situação atual</th><th>Ações</th></tr></thead><tbody id="schedule-list"></tbody></table></div></div>
       </section>
       <section id="calendar-view" class="view">
         <div class="panel calendar-toolbar">
