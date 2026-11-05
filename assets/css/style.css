@@ -195,3 +195,8 @@ body{font-size:15px}
 .month-editor-heading small,.reschedule-help{font-size:10px;color:#71858c;line-height:1.5;}
 .reschedule-help{display:block;margin-top:9px;}
 @media(max-width:760px){.roadmap-legend.interactive-legend{gap:9px;padding:11px}.roadmap-legend.interactive-legend .legend-item{font-size:10px}.timeline-table th .month-add{width:18px;height:18px;margin-left:1px}}
+
+
+/* Contraste reforçado para o cabeçalho de Análises da Alta Direção (AR/AD) */
+.timeline-group-title.priority-high{background:#102f3a!important;color:#fff!important;border-left:5px solid #071e26!important;border-radius:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 4px 10px rgba(7,30,38,.22);}
+.timeline-group-title.priority-high .group-count{color:#e3eef1!important;background:rgba(255,255,255,.14);padding:3px 9px;border-radius:20px;}
