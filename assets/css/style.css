@@ -245,3 +245,236 @@ body{font-size:15px}
 .timeline-structured-table .timeline-work-meta{font-size:8px;color:#637e86}
 .timeline-structured-table .timeline-mark.empty{background:#f8fbfc;border:1px solid #d7e3e6;color:#82969c}
 .timeline-structured-table .timeline-mark:disabled{opacity:.35;cursor:not-allowed}
+
+
+/* RECONSTRUÇÃO DA VISUALIZAÇÃO: duas planilhas, sem corte vertical */
+.timeline-board{
+  display:grid;
+  gap:28px;
+  overflow:visible !important;
+  max-height:none !important;
+  height:auto !important;
+}
+.timeline-sheet{
+  width:100%;
+  min-width:0;
+  background:#fff;
+  border:1px solid #cbd9dd;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 5px 18px rgba(18,55,67,.07);
+}
+.timeline-sheet-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px 22px;
+  background:#123743;
+  color:#fff;
+}
+.timeline-sheet-heading h3{
+  margin:0;
+  color:#fff;
+  font:800 16px/1.3 Manrope,sans-serif;
+  letter-spacing:.025em;
+}
+.timeline-sheet-heading p{
+  margin:6px 0 0;
+  color:#d7e7eb;
+  font:500 12px/1.45 "DM Sans",sans-serif;
+}
+.timeline-sheet-count{
+  flex:0 0 auto;
+  padding:8px 12px;
+  border:1px solid #71909a;
+  border-radius:7px;
+  color:#fff;
+  font:700 12px/1 "DM Sans",sans-serif;
+  white-space:nowrap;
+}
+.timeline-sheet-scroll{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:visible;
+  background:#fff;
+  overscroll-behavior-x:contain;
+  scrollbar-color:#78939b #e7eef0;
+  scrollbar-width:thin;
+}
+.timeline-structured-table{
+  width:max-content !important;
+  min-width:100% !important;
+  table-layout:fixed !important;
+  border-collapse:separate;
+  border-spacing:0;
+  background:#fff;
+}
+.timeline-structured-table.general-sheet{min-width:3112px !important}
+.timeline-structured-table.year-2027-sheet{min-width:1584px !important}
+.timeline-structured-table thead th{
+  height:46px;
+  padding:8px 6px;
+  background:#174956 !important;
+  color:#fff !important;
+  border-right:1px solid #456d77;
+  border-bottom:1px solid #456d77;
+  text-align:center;
+  vertical-align:middle;
+  font:800 12px/1.2 "DM Sans",sans-serif !important;
+  letter-spacing:.035em;
+  opacity:1 !important;
+}
+.timeline-structured-table thead tr:first-child th{
+  height:44px;
+  background:#102f3a !important;
+  color:#fff !important;
+  font-size:13px !important;
+}
+.timeline-structured-table thead th.title-head{
+  position:sticky;
+  left:0;
+  z-index:5;
+  width:520px;
+  min-width:520px;
+  max-width:520px;
+  text-align:left;
+  padding-left:18px;
+  background:#102f3a !important;
+}
+.timeline-structured-table thead th.type-head{
+  width:190px;
+  min-width:190px;
+  max-width:190px;
+  background:#102f3a !important;
+}
+.timeline-structured-table thead th.year-head{font-size:14px !important}
+.timeline-structured-table thead th.month-head{
+  width:72px;
+  min-width:72px;
+  max-width:72px;
+  background:#174956 !important;
+}
+.timeline-structured-table .month-head span{
+  display:block;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+}
+.timeline-structured-table .month-add{
+  display:inline-grid;
+  place-items:center;
+  width:21px;
+  height:21px;
+  margin-top:4px;
+  border:1px solid #9db8c0;
+  border-radius:5px;
+  background:#f1f7f8;
+  color:#123743;
+  font-size:14px;
+  line-height:1;
+  cursor:pointer;
+}
+.timeline-structured-table tbody td{
+  height:auto;
+  min-height:56px;
+  padding:9px 6px;
+  border-right:1px solid #e0e8ea;
+  border-bottom:1px solid #dbe5e8;
+  background:#fff;
+  text-align:center;
+  vertical-align:middle;
+}
+.timeline-structured-table tbody tr:nth-child(even):not(.timeline-section-row) td{background:#f4f8f9}
+.timeline-structured-table tbody td.timeline-title-cell{
+  position:sticky;
+  left:0;
+  z-index:2;
+  width:520px;
+  min-width:520px;
+  max-width:520px;
+  padding:10px 16px;
+  background:#edf3f5;
+  text-align:left;
+  box-shadow:3px 0 5px rgba(20,55,66,.07);
+}
+.timeline-structured-table tbody tr:nth-child(even):not(.timeline-section-row) td.timeline-title-cell{background:#e5eef1}
+.timeline-work-open{
+  display:block;
+  width:100%;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#173e49;
+  text-align:left;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+  font:700 12px/1.45 "DM Sans",sans-serif;
+  cursor:pointer;
+}
+.timeline-work-open:hover{text-decoration:underline;color:#0d6474}
+.timeline-work-open:disabled{cursor:default}
+.timeline-work-meta{
+  display:block;
+  margin-top:4px;
+  color:#647b83;
+  font:500 10px/1.3 "DM Sans",sans-serif;
+}
+.timeline-structured-table tbody td.timeline-type-cell{
+  width:190px;
+  min-width:190px;
+  max-width:190px;
+  padding:10px;
+  color:#425f68;
+  text-align:left;
+  white-space:normal;
+  font:600 11px/1.4 "DM Sans",sans-serif;
+}
+.timeline-structured-table tbody td.month-cell{
+  width:72px;
+  min-width:72px;
+  max-width:72px;
+  padding:8px 5px;
+}
+.timeline-structured-table .timeline-section-row td{
+  height:44px;
+  min-height:44px;
+  padding:11px 16px;
+  background:#dce8eb !important;
+  color:#153d48 !important;
+  border-top:2px solid #b8cbd1;
+  border-bottom:1px solid #b8cbd1;
+  text-align:left;
+  font:800 13px/1.35 Manrope,sans-serif;
+  letter-spacing:.01em;
+}
+.timeline-section-number{
+  display:inline-block;
+  min-width:35px;
+  margin-right:10px;
+  color:#0e5261;
+  font:900 13px/1.2 Manrope,sans-serif;
+}
+.timeline-structured-table .timeline-mark{
+  width:36px;
+  height:32px;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+}
+.timeline-structured-table .timeline-mark.empty{
+  background:#f5f8f9;
+  border:1px solid #cbd9dd;
+  color:#81949a;
+}
+.timeline-structured-table .timeline-mark:disabled{opacity:.3;cursor:not-allowed}
+@media(max-width:700px){
+  .timeline-sheet-heading{align-items:flex-start;flex-direction:column;padding:15px}
+  .timeline-sheet-heading h3{font-size:14px}
+  .timeline-sheet-heading p{font-size:11px}
+  .timeline-structured-table thead th.title-head,
+  .timeline-structured-table tbody td.timeline-title-cell{width:360px;min-width:360px;max-width:360px}
+  .timeline-structured-table.year-2027-sheet{min-width:1424px !important}
+  .timeline-structured-table.general-sheet{min-width:2952px !important}
+}
