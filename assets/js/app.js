@@ -301,6 +301,8 @@ function openModal(work=null, monthKey=""){
   $("#program-mark").value=selectedMonth?(work?.months?.[selectedMonth]||"P"):"";
   $("#reschedule-month").value="";
   $("#program-month").dataset.sourceMonth=work&&selectedMonth?selectedMonth:"";
+  $("#program-month").dataset.clearMonth="";
+  $("#clear-month-mark").disabled=!(work&&selectedMonth&&work.months?.[selectedMonth]);
   $("#work-start").value=work?.start||"";
   $("#work-end").value=work?.end||"";
   $("#work-modal").classList.add("open"); $("#work-modal").setAttribute("aria-hidden","false");
@@ -319,6 +321,8 @@ function saveWork(event){
   if(targetMonth&&(!sourceMonth||!previous)){showToast("Para reagendar, abra uma programação existente no calendário e informe o novo mês.");return;}
   if(targetMonth&&targetMonth===sourceMonth){showToast("O novo mês deve ser diferente do mês de origem.");return;}
   if(targetMonth&&months[targetMonth]&&months[targetMonth]!=="-"&&!confirm("Já existe uma programação em "+monthLabel(targetMonth)+". Deseja substituí-la por Replanejado (R)?"))return;
+  const clearMonth=$("#program-month").dataset.clearMonth||"";
+  if(clearMonth){delete months[clearMonth];}
   if(targetMonth){months[sourceMonth]="-";months[targetMonth]="R";}else if(programMonth&&programMark){months[programMonth]=programMark;}
   if(start&&end){
     let cursor=new Date(start+"T12:00:00"),last=new Date(end+"T12:00:00"),guard=0;
@@ -328,10 +332,10 @@ function saveWork(event){
   if(targetMonth)history.push({from:sourceMonth,to:targetMonth,previousMark:previous?.months?.[sourceMonth]||programMark||"P",date:new Date().toISOString()});
   let nextStatus=$("#work-status").value;
   const statusByMark={"✔":"concluido",A:"andamento",R:"replanejado",D:"demanda",P:"planejamento"};
-  if(targetMonth)nextStatus="replanejado";else if(programMark&&statusByMark[programMark])nextStatus=statusByMark[programMark];
+  if(targetMonth)nextStatus="replanejado";else if(clearMonth)nextStatus=latestMarkStatus(months);else if(programMark&&statusByMark[programMark])nextStatus=statusByMark[programMark];
   const item={id:id||makeId(),title:$("#work-name").value.trim(),area:$("#work-area").value,type:$("#work-type").value,status:nextStatus,priority:$("#work-priority").value,start,end,owner:$("#work-owner").value.trim(),code:$("#work-code").value.trim(),notes:$("#work-notes").value.trim(),months,rescheduleHistory:history,source:previous?.source||"cadastro",lockedSource:false};
   if(previous){works=works.map(w=>w.id===id?item:w);}else{works.unshift(item);}
-  persist();closeModal();populateAreaFilter();populateCalendarFilters();renderAll();showToast(previous?"Trabalho atualizado.":"Trabalho cadastrado.");
+  persist();closeModal();populateAreaFilter();populateCalendarFilters();renderAll();showToast(clearMonth?"Marcação mensal removida.":previous?"Trabalho atualizado.":"Trabalho cadastrado.");
 }
 function deleteWork(id){
   const work=works.find(w=>w.id===id); if(!work)return;
@@ -367,6 +371,18 @@ function exportCsv(){
   downloadFile("cronogramas-fg.csv",csv,"text/csv;charset=utf-8");showToast("CSV exportado.");
 }
 document.addEventListener("click",event=>{
+  const clearMark=event.target.closest("#clear-month-mark");
+  if(clearMark){
+    const month=$("#program-month").value;
+    const work=works.find(item=>item.id===$("#work-id").value);
+    if(!month||!work?.months?.[month]){showToast("Selecione um mês que possua marcação.");return;}
+    if(!confirm("Remover a marcação de "+monthLabel(month)+"? O trabalho e as demais marcações serão mantidos."))return;
+    $("#program-month").dataset.clearMonth=month;
+    $("#program-mark").value="";
+    $("#clear-month-mark").disabled=true;
+    showToast("Marcação selecionada para remoção. Clique em Salvar trabalho para confirmar.");
+    return;
+  }
   const addMonth=event.target.closest("[data-new-month]");
   if(addMonth){openModal(null,addMonth.dataset.newMonth);return;}
   const timelineCell=event.target.closest("[data-timeline-cell]");
