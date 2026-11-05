@@ -184,7 +184,7 @@ function renderSchedules(){
       return '<span class="timeline-chip '+cls+'" title="'+escapeHtml(label)+'">'+monthLabel(m)+' <b>'+escapeHtml(mark)+'</b></span>';
     }).join("");
     const status=STATUS[w.status]||STATUS.novo,meta=[w.code,w.type,w.owner?"Resp.: "+w.owner:""].filter(Boolean).join(" · ");
-    return '<tr><td class="work-title-cell"><strong>'+escapeHtml(w.title)+'</strong><small>'+escapeHtml(meta||"Sem código ou responsável informado")+'</small></td><td>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</td><td><div class="timeline-chips">'+(months||'<span class="no-dates">Sem programação mensal informada</span>')+'</div></td><td><span class="badge '+status.className+'">'+status.label+'</span></td><td><div class="card-actions"><button class="icon-btn" data-edit="'+escapeHtml(w.id)+'" title="Editar" aria-label="Editar">✎</button><button class="icon-btn" data-delete="'+escapeHtml(w.id)+'" title="Excluir" aria-label="Excluir">×</button></div></td></tr>';
+    return '<tr><td class="work-title-cell"><strong>'+escapeHtml(w.title)+'</strong><small>'+escapeHtml(meta||"Sem código ou responsável informado")+'</small></td><td>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</td><td><div class="timeline-chips">'+(months||'<span class="no-dates">Sem programação mensal informada</span>')+'</div></td><td><span class="badge '+status.className+'">'+status.label+'</span></td><td><div class="card-actions"><button class="icon-btn" data-reschedule="'+escapeHtml(w.id)+'" title="Reagendar este trabalho" aria-label="Reagendar">↪</button><button class="icon-btn" data-edit="'+escapeHtml(w.id)+'" title="Editar" aria-label="Editar">✎</button><button class="icon-btn" data-delete="'+escapeHtml(w.id)+'" title="Excluir" aria-label="Excluir">×</button></div></td></tr>';
   }).join(""):'<tr><td colspan="5"><div class="empty-box"><b>Nenhum serviço encontrado</b>Ajuste os filtros ou cadastre um novo trabalho.</div></td></tr>';
 }
 
@@ -315,9 +315,34 @@ function saveWork(event){
     let cursor=new Date(start+"T12:00:00"),last=new Date(end+"T12:00:00"),guard=0;
     while(cursor<=last&&guard++<60){const key=cursor.getFullYear()+"-"+String(cursor.getMonth()+1).padStart(2,"0");if(!months[key])months[key]="P";cursor.setMonth(cursor.getMonth()+1);}
   }else if(start){const key=start.slice(0,7);if(!months[key])months[key]="P";}
-  const item={id:id||makeId(),title:$("#work-name").value.trim(),area:$("#work-area").value,type:$("#work-type").value,status:$("#work-status").value,priority:$("#work-priority").value,start,end,owner:$("#work-owner").value.trim(),code:$("#work-code").value.trim(),notes:$("#work-notes").value.trim(),months,source:previous?.source||"cadastro",lockedSource:false};
+  const item={id:id||makeId(),title:$("#work-name").value.trim(),area:$("#work-area").value,type:$("#work-type").value,status:$("#work-status").value,priority:$("#work-priority").value,start,end,owner:$("#work-owner").value.trim(),code:$("#work-code").value.trim(),notes:$("#work-notes").value.trim(),months,rescheduleHistory:previous?.rescheduleHistory||[],source:previous?.source||"cadastro",lockedSource:false};
   if(previous){works=works.map(w=>w.id===id?item:w);}else{works.unshift(item);}
   persist();closeModal();populateAreaFilter();populateCalendarFilters();renderAll();showToast(previous?"Trabalho atualizado.":"Trabalho cadastrado.");
+}
+function rescheduleWork(id){
+  const work=works.find(w=>w.id===id); if(!work)return;
+  const months=sortedMonths(work.months||{});
+  if(!months.length){showToast("Este trabalho ainda não possui mês programado. Edite o trabalho ou inclua uma programação no painel.");return;}
+  const options=months.map((m,i)=>(i+1)+". "+monthLabel(m)+" — "+(work.months[m]||"sem marcação")).join("\n");
+  const choice=prompt("Qual programação deseja retirar e reagendar? Informe o número:\n"+options,"1");
+  if(choice===null)return;
+  const index=Number(choice)-1;
+  if(!Number.isInteger(index)||index<0||index>=months.length){showToast("Seleção de mês inválida.");return;}
+  const from=months[index];
+  const target=prompt("Informe o novo mês no formato AAAA-MM (ex.: 2027-03):","");
+  if(target===null)return;
+  if(!/^\\d{4}-(0[1-9]|1[0-2])$/.test(target)){showToast("Mês inválido. Utilize o formato AAAA-MM.");return;}
+  if(target===from){showToast("O novo mês deve ser diferente do mês de origem.");return;}
+  const existing=work.months[target];
+  if(existing&&existing!=="-"&&!confirm("Já existe uma marcação em "+monthLabel(target)+". Deseja substituí-la por Replanejado (R)?"))return;
+  if(!confirm("Reagendar \""+work.title+"\" de "+monthLabel(from)+" para "+monthLabel(target)+"? O registro será mantido e o mês de origem ficará como Sem atividade (−)."))return;
+  work.months[from]="-";
+  work.months[target]="R";
+  work.status="replanejado";
+  work.rescheduleHistory=work.rescheduleHistory||[];
+  work.rescheduleHistory.push({from,to:target,previousMark:work.months[from],date:new Date().toISOString()});
+  persist();populateAreaFilter();renderAll();
+  showToast("Trabalho reagendado sem criar um novo cadastro.");
 }
 function deleteWork(id){
   const work=works.find(w=>w.id===id); if(!work)return;
@@ -370,6 +395,7 @@ document.addEventListener("click",event=>{
   const workFilter=event.target.closest("[data-work-filter]");if(workFilter){currentWorkFilter=workFilter.dataset.workFilter;renderSchedules();return;}
   const view=event.target.closest("[data-view]");if(view){setView(view.dataset.view);return;}
   if(event.target.closest("#new-work")||event.target.closest("#new-work-2")){openModal();return;}
+  const reschedule=event.target.closest("[data-reschedule]");if(reschedule){rescheduleWork(reschedule.dataset.reschedule);return;}
   const edit=event.target.closest("[data-edit]");if(edit){openModal(works.find(w=>w.id===edit.dataset.edit));return;}
   const del=event.target.closest("[data-delete]");if(del){deleteWork(del.dataset.delete);return;}
   const close=event.target.closest('[data-close="modal"]');if(close){closeModal();return;}
