@@ -162,10 +162,9 @@ function renderTimeline(){
   if(!board)return;
   const structure=sourceData?.timelineStructure||{};
   const sheetKeys=timelineYear==="all"?["2025-2026","2027"]:[timelineYear];
-  const normalize=value=>String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
   const findWork=entry=>{
     const id=entry[5];
-    return (id&&works.find(item=>item.id===id))||works.find(item=>item.area===entry[2]&&normalize(item.title)===normalize(entry[1]));
+    return id ? works.find(item=>item.id===id) : null;
   };
   const monthKeysGeneral=[];
   [2025,2026,2027].forEach(year=>MONTH_NAMES.forEach((_,index)=>monthKeysGeneral.push(year+"-"+String(index+1).padStart(2,"0"))));
@@ -182,7 +181,7 @@ function renderTimeline(){
   const workRow=(entry,keys,withType)=>{
     const [kind,title,area,section,order]=entry;
     if(kind==="section"){
-      return '<tr class="timeline-section-row"><td colspan="'+(keys.length+(withType?2:1))+'"><span class="timeline-section-number">'+escapeHtml((title.match(/^\\d+(?:\\.\\d+)?/)||[""])[0])+'</span>'+escapeHtml(title.replace(/^\\d+(?:\\.\\d+)?\\.?\\s*/,""))+'</td></tr>';
+      return '<tr class="timeline-section-row"><td colspan="'+(keys.length+(withType?2:1))+'"><span class="timeline-section-number">'+escapeHtml((title.match(/^[0-9.]+/)||[""])[0])+'</span>'+escapeHtml(title.replace(/^[0-9.]+ */,""))+'</td></tr>';
     }
     const work=findWork(entry);
     const displayTitle=work?.title||title;
