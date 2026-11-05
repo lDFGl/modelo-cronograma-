@@ -36,33 +36,41 @@ const latestMarkStatus = marks => {
 };
 const makeId = () => "fg-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,7);
 function buildInitialData(data){
+  const titleById = new Map();
+  Object.values(data.timelineStructure || {}).flat().forEach(row => {
+    if(row[0] === "work" && row[5]) titleById.set(row[5], row[1]);
+  });
   const list = [];
   (data.schedule2025_2027 || []).forEach((row,index)=>{
-    const [title,area,marks] = row;
-    list.push({id:"legacy-2527-"+index,title,area,type:"Histórico importado",status:latestMarkStatus(marks),priority:"media",months:marks,owner:"",code:(title.match(/\b(?:AI|AR|AD)-?\d{3}[_/-]?\d{4}\b/i)||[])[0]||"",notes:"Registro importado da planilha original. Marcações mensais preservadas.",source:"2025-2027",lockedSource:true});
+    const [sourceTitle,area,marks] = row;
+    const id = "legacy-2527-" + index;
+    const title = titleById.get(id) || sourceTitle;
+    list.push({id,title,area,type:"",status:latestMarkStatus(marks),priority:"media",months:marks,owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",notes:"",source:"2025-2027",lockedSource:true});
   });
   (data.schedule2027 || []).forEach((row,index)=>{
-    const [title,area,type,months] = row;
+    const [sourceTitle,area,type,months] = row;
+    const id = "legacy-2027-" + index;
+    const title = titleById.get(id) || sourceTitle;
     const monthMap = {};
     months.forEach(key=>monthMap[key]="P");
-    list.push({id:"legacy-2027-"+index,title,area,type,status:"planejamento",priority:"media",months:monthMap,owner:"",code:(title.match(/\b(?:AI|AR|AD)-?\d{3}[_/-]?\d{4}\b/i)||[])[0]||"",notes:"Planejamento conforme cronograma 2027 da planilha original. Marcações P preservadas.",source:"2027",lockedSource:true});
+    list.push({id,title,area,type,status:"planejamento",priority:"media",months:monthMap,owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",notes:"",source:"2027",lockedSource:true});
   });
+  const normalize = value => String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
   const consolidated = new Map();
   list.forEach(item=>{
-    const key = item.area + "|" + String(item.title).normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+    const key = item.area + "|" + normalize(item.title);
     if(consolidated.has(key)){
       const existing = consolidated.get(key);
       existing.months = {...(existing.months||{}),...(item.months||{})};
       existing.type = item.type || existing.type;
       existing.source = "2025-2027 + 2027";
-      existing.notes = (existing.notes||"") + " | Registro equivalente também identificado na aba específica de 2027.";
     }else consolidated.set(key,item);
   });
   return [...consolidated.values()];
 }
 async function initialize(){
   try{
-    const response = await fetch("data/historico.json?v=20261105-3",{cache:"no-store"});
+    const response = await fetch("data/historico.json?v=20261105-4",{cache:"no-store"});
     if(!response.ok) throw new Error("Não foi possível carregar o histórico.");
     sourceData = await response.json();
   }catch(error){
@@ -74,30 +82,37 @@ async function initialize(){
     const stored = localStorage.getItem(STORAGE_KEY);
     if(stored){
       const parsed = JSON.parse(stored);
-      works = Array.isArray(parsed.works) ? parsed.works : [...initial];
-      // Migração segura: inclui registros históricos que chegaram em versões
-      // posteriores do arquivo-fonte, sem sobrescrever itens já editados no navegador.
-      const identity = item => String(item.area||"")+"|"+String(item.title||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-      const existingKeys = new Set(works.map(identity));
-      const existingIds = new Set(works.map(item=>item.id));
-      const missingHistorical = initial.filter(item=>!existingKeys.has(identity(item))).map(item=>{
-        if(existingIds.has(item.id)) item.id=makeId();
-        existingIds.add(item.id);
-        existingKeys.add(identity(item));
-        return item;
+      const storedWorks = Array.isArray(parsed.works) ? parsed.works : [];
+      const normalize = value => String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+      const identity = item => String(item.area||"") + "|" + normalize(item.title);
+      const byId = new Map(storedWorks.map(item=>[item.id,item]));
+      const byIdentity = new Map(storedWorks.filter(item=>item.lockedSource).map(item=>[identity(item),item]));
+      const reconciled = initial.map(sourceItem=>{
+        const previous = byId.get(sourceItem.id) || byIdentity.get(identity(sourceItem));
+        if(!previous) return sourceItem;
+        return {
+          ...sourceItem,
+          ...previous,
+          id:sourceItem.id,
+          title:sourceItem.title,
+          area:sourceItem.area,
+          type:sourceItem.type || previous.type || "",
+          code:sourceItem.code || previous.code || "",
+          source:sourceItem.source,
+          lockedSource:true,
+          months:{...(sourceItem.months||{}),...(previous.months||{})}
+        };
       });
-      if(missingHistorical.length){
-        works = [...works,...missingHistorical];
-        persist();
-        showToast(missingHistorical.length+" serviço(s) da planilha original foram incorporados ao cronograma.");
-      }
+      const manualWorks = storedWorks.filter(item=>!item.lockedSource);
+      works = [...reconciled,...manualWorks];
+      if(JSON.stringify(storedWorks)!==JSON.stringify(works)) persist();
     }else{
       works = initial;
       persist();
     }
   }catch(error){
     works = initial;
-    showToast("Não foi possível ler os dados locais. A carga histórica foi restaurada nesta sessão.");
+    showToast("Não foi possível ler os dados locais. A carga original da planilha foi restaurada nesta sessão.");
   }
   $("#today-label").textContent = new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"short",year:"numeric"}).format(new Date());
   populateAreaFilter();
@@ -153,27 +168,39 @@ function workCategory(w){
 function categoryLabel(category){return category==="alta"?"ANÁLISES DA ALTA DIREÇÃO (AR / AD)":category==="ai"?"AUDITORIAS INTERNAS (AI)":category==="follow"?"FOLLOW-UPS E PLANOS DE AÇÃO":"DEMAIS ATIVIDADES";}
 function prioritySort(a,b){const order={alta:0,ai:1,follow:2,other:3};return order[workCategory(a)]-order[workCategory(b)]||a.title.localeCompare(b.title,"pt-BR");}
 function renderTimeline(){
-  const groups=["alta","ai","follow","other"],months=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
   const board=$("#timeline-board");
   if(!board)return;
-  const years=[...new Set(works.flatMap(w=>Object.keys(w.months||{}).map(m=>m.slice(0,4))))].sort();
-  const visibleYears=timelineYear==="all"?years:years.filter(y=>y===timelineYear);
-  const sections=visibleYears.map(year=>{
-    const rows=works.filter(w=>Object.keys(w.months||{}).some(m=>m.startsWith(year))).sort(prioritySort);
-    const yearGroups=groups.map(group=>{
-      const items=rows.filter(w=>{
-        const category=workCategory(w);
-        const displayCategory=year==="2027"&&category==="ai"?"other":category;
-        return displayCategory===group;
-      });
-      if(!items.length)return "";
-      return '<section class="timeline-group"><div class="timeline-group-title '+(group==="alta"?"priority-high":group==="ai"?"priority-ai":group==="follow"?"priority-follow":"")+'">'+categoryLabel(group)+'<span class="group-count">'+items.length+' trabalho(s)</span></div><table class="timeline-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map((m,i)=>'<th><span>'+m+'</span><button type="button" class="month-add" data-new-month="'+year+'-'+String(i+1).padStart(2,"0")+'" title="Adicionar trabalho em '+m+'">＋</button></th>').join("")+'</tr></thead><tbody>'+items.map(w=>'<tr><td><div class="timeline-work-title-row"><div class="timeline-work-name" role="button" tabindex="0" data-timeline-edit="'+escapeHtml(w.id)+'">'+escapeHtml(w.title)+'</div><button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(w.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button></div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[w.area]||w.area)+(w.owner?" · "+escapeHtml(w.owner):"")+'</div></td>'+months.map((m,i)=>{const key=year+"-"+String(i+1).padStart(2,"0"),mark=(w.months||{})[key],cls=mark==="✔"?"done":mark==="-"?"none":mark||"";return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" data-timeline-cell="'+escapeHtml(w.id)+'" data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';}).join("")+'</tr>').join("")+'</tbody></table></section>';
+  const structure=sourceData?.timelineStructure||{};
+  const allYears=Object.keys(structure).sort();
+  const visibleYears=timelineYear==="all"?allYears:allYears.filter(year=>year===timelineYear);
+  const months=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+  const normalize=value=>String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  const findWork=(entry)=>{
+    const byId=entry[5]?works.find(item=>item.id===entry[5]):null;
+    return byId||works.find(item=>item.area===entry[2]&&normalize(item.title)===normalize(entry[1]));
+  };
+  board.innerHTML=visibleYears.map(year=>{
+    const rows=structure[year]||[];
+    const workCount=rows.filter(row=>row[0]==="work").length;
+    const body=rows.map(entry=>{
+      const [kind,title,area,section,order,sourceId]=entry;
+      if(kind==="section"){
+        const priority=section==="4"?" priority-high":"";
+        return '<tr class="timeline-section-row'+priority+'"><td colspan="13"><span class="timeline-section-number">'+escapeHtml(section)+'</span>'+escapeHtml(title.replace(/^\\d+\\.\\s*/,""))+'</td></tr>';
+      }
+      const work=findWork(entry);
+      const shownTitle=work?.title||title;
+      const meta=AREA_LABELS[area]||area;
+      const cells=months.map((month,index)=>{
+        const key=year+"-"+String(index+1).padStart(2,"0");
+        const mark=work?.months?.[key]||"";
+        const cls=mark==="✔"?"done":mark==="-"?"none":mark||"";
+        return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" '+(work?'data-timeline-cell="'+escapeHtml(work.id)+'"':'disabled')+' data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';
+      }).join("");
+      return '<tr class="timeline-work-row"><td><div class="timeline-work-title-row"><div class="timeline-work-name" '+(work?'role="button" tabindex="0" data-timeline-edit="'+escapeHtml(work.id)+'"':'')+'>'+escapeHtml(shownTitle)+'</div>'+(work?'<button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(work.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button>':"")+'</div><div class="timeline-work-meta">'+escapeHtml(meta)+'</div></td>'+cells+'</tr>';
     }).join("");
-    return '<section class="timeline-year-section"><div class="timeline-year-heading">'+year+'<span>'+rows.length+' serviços programados</span></div>'+yearGroups+'</section>';
-  }).join("");
-  const unplanned=works.filter(w=>!Object.keys(w.months||{}).length&&(timelineYear==="all"||w.source===timelineYear)).sort(prioritySort);
-  const unplannedHtml=unplanned.length?'<section class="timeline-group"><div class="timeline-group-title">SEM PROGRAMAÇÃO MENSAL<span class="group-count">'+unplanned.length+' trabalho(s)</span></div><div class="timeline-unplanned-list">'+unplanned.map(w=>'<div class="timeline-unplanned-row"><div><b>'+escapeHtml(w.title)+'</b><small>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</small></div><button type="button" class="btn btn-outline" data-edit="'+escapeHtml(w.id)+'">Editar</button></div>').join("")+'</div></section>':"";
-  board.innerHTML=(sections||"")+(unplannedHtml||"")||'<section class="timeline-group"><div class="timeline-empty">Nenhum serviço encontrado para o filtro selecionado.</div></section>';
+    return '<section class="timeline-year-section"><div class="timeline-year-heading">'+year+'<span>'+workCount+' trabalhos · estrutura original da planilha</span></div><table class="timeline-table timeline-structured-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map((month,index)=>'<th><span>'+month+'</span><button type="button" class="month-add" data-new-month="'+year+'-'+String(index+1).padStart(2,"0")+'" title="Adicionar trabalho em '+month+'">＋</button></th>').join("")+'</tr></thead><tbody>'+body+'</tbody></table></section>';
+  }).join("")||'<section class="timeline-group"><div class="timeline-empty">Nenhum trabalho encontrado para o filtro selecionado.</div></section>';
 }
 function renderAll(){renderDashboard();renderTimeline();renderSchedules();}
 function renderDashboard(){
