@@ -122,7 +122,7 @@
       }
     ],
     [
-      "Follow-up e Acompanhamento dos Planos de Ações ADM 2024/2025/2026",
+      "Follow-up e Acompanhamento dos Planos de Ações ADM 2025/2026",
       "ADM",
       {
         "2025-07": "✔",
@@ -192,7 +192,7 @@
       }
     ],
     [
-      "Follow-up e Acompanhamento dos Planos de Ações Obras 2024/2025/2026",
+      "Follow-up e Acompanhamento dos Planos de Ações Obras 2025/2026",
       "Obras",
       {
         "2025-12": "✔",
@@ -551,6 +551,714 @@
     ]
   ],
   "timelineStructure": {
+    "2025": [
+      [
+        "work",
+        "1. Planejamento dos Trabalhos de AI",
+        "Governança",
+        "1",
+        4,
+        "legacy-2527-0"
+      ],
+      [
+        "section",
+        "2. Execução de Auditoria Interna nos Processos Administrativos do Escritório Central (ADM):",
+        "ADM",
+        "2",
+        5,
+        ""
+      ],
+      [
+        "work",
+        "2.1 - Auditoria dos processos de compras da Assistência Técnica (AI-001_2025)",
+        "ADM",
+        "2",
+        6,
+        "legacy-2527-1"
+      ],
+      [
+        "work",
+        "2.2 - Auditoria dos processos de compras de Suprimentos para a Assistência Técnica (AI-002_2025)",
+        "ADM",
+        "2",
+        7,
+        "legacy-2527-2"
+      ],
+      [
+        "work",
+        "2.3 - Auditoria dos processos de compras de Áreas Comuns e Paisagismo para o SUP (AI-003_2025)",
+        "ADM",
+        "2",
+        8,
+        "legacy-2527-3"
+      ],
+      [
+        "work",
+        "2.4 - Auditoria dos processos de compras do Marketing (AI-004_2025)",
+        "ADM",
+        "2",
+        9,
+        "legacy-2527-4"
+      ],
+      [
+        "work",
+        "2.5 - Auditoria dos processos de Homologação Fornecedores/Contratos (AI-005_2025)",
+        "ADM",
+        "2",
+        10,
+        "legacy-2527-5"
+      ],
+      [
+        "work",
+        "2.6 - Auditoria dos processos de pagamentos das Comissões nas Vendas Efetivadas (AI-006_2025)",
+        "ADM",
+        "2",
+        11,
+        "legacy-2527-6"
+      ],
+      [
+        "work",
+        "2.7 - Auditoria dos processos de Contratação, Folha, Clima Org. e Controle internos do DHO (AI-009_2026)",
+        "ADM",
+        "2",
+        12,
+        "legacy-2527-7"
+      ],
+      [
+        "work",
+        "2.8 - Auditoria dos processos do Financeiro/Contas a pagar (AI-015_2026)",
+        "ADM",
+        "2",
+        13,
+        "legacy-2527-8"
+      ],
+      [
+        "work",
+        "2.9 - Auditoria dos processos do Financeiro/Contas a receber (AI-014_2026)",
+        "ADM",
+        "2",
+        14,
+        "legacy-2527-9"
+      ],
+      [
+        "work",
+        "2.10 - Auditoria dos processos de Controle Patrimonial - Depósitos Patrimônio e MKT (AI-016_2026)",
+        "ADM",
+        "2",
+        15,
+        "legacy-2527-10"
+      ],
+      [
+        "work",
+        "2.11 - Auditoria dos controles internos APROBRAVA (AI-011_2026)",
+        "ADM",
+        "2",
+        16,
+        "legacy-2527-11"
+      ],
+      [
+        "work",
+        "2.12 - Auditoria dos processos de compras da Assistência Técnica (AI-012_2026) - Ciclo 1",
+        "ADM",
+        "2",
+        17,
+        "legacy-2527-12"
+      ],
+      [
+        "work",
+        "2.13 - Auditoria dos processos referente aos contratos de Permuta Terreno/Fornecedores (SOLICITADO JEAN)",
+        "ADM",
+        "2",
+        18,
+        "legacy-2527-13"
+      ],
+      [
+        "work",
+        "Follow-up e Acompanhamento dos Planos de Ações ADM 2025/2026",
+        "ADM",
+        "2",
+        19,
+        "legacy-2527-14"
+      ],
+      [
+        "section",
+        "3. Execução de Auditoria Internas nos Processos Operacionais - Obras:",
+        "Obras",
+        "3",
+        20,
+        ""
+      ],
+      [
+        "work",
+        "3.1 - Auditoria dos processos de SESMT nas Obras (EPIs e EPCs) e Aplicação das NRs (AI-007_2025)",
+        "Obras",
+        "3",
+        21,
+        "legacy-2527-15"
+      ],
+      [
+        "work",
+        "3.2 - Auditoria dos processos de Treinamentos de SESMT (FG e Terceirizados) (AI-007_2025)",
+        "Obras",
+        "3",
+        22,
+        "legacy-2527-16"
+      ],
+      [
+        "work",
+        "3.3 - Auditoria dos Contratos de Terceirizados, Adendos e Distratos ocorridos em 2025 (AI-008_2026)",
+        "Obras",
+        "3",
+        23,
+        "legacy-2527-17"
+      ],
+      [
+        "work",
+        "3.4 - Auditoria dos processos de Medição de Obras BLUE VIEW, ICONIC e TITANIUM (AI-010_2026)",
+        "Obras",
+        "3",
+        24,
+        "legacy-2527-18"
+      ],
+      [
+        "work",
+        "3.5 - Auditoria dos processos de Medição de Obras IMPERIUM e GARDEN PARK (AI-013_2026)",
+        "Obras",
+        "3",
+        25,
+        "legacy-2527-19"
+      ],
+      [
+        "work",
+        "3.6 - Auditoria dos processos de Medição de Obras NORTH TOWER e SENNA TOWER (AI-017_2026)",
+        "Obras",
+        "3",
+        26,
+        "legacy-2527-20"
+      ],
+      [
+        "work",
+        "3.7 - Auditoria Interna - Controle do Estoque Ferramental",
+        "Obras",
+        "3",
+        27,
+        "legacy-2527-21"
+      ],
+      [
+        "work",
+        "3.8 - Auditoria dos processos do Cronograma Avanço Físico-Financeiro (NORTH TOWER)",
+        "Obras",
+        "3",
+        28,
+        "legacy-2527-22"
+      ],
+      [
+        "work",
+        "Follow-up e Acompanhamento dos Planos de Ações Obras 2025/2026",
+        "Obras",
+        "3",
+        29,
+        "legacy-2527-23"
+      ],
+      [
+        "section",
+        "4. Demandas Solicitadas pela Alta Administração (Análises Rápidas):",
+        "Demandas",
+        "4",
+        30,
+        ""
+      ],
+      [
+        "work",
+        "4.1 - AR-001-2025 - Serviço de Pintura Helicóptero B4",
+        "Demandas",
+        "4",
+        31,
+        "legacy-2527-24"
+      ],
+      [
+        "work",
+        "4.2 - AR-002-2025 - Móveis Planejados Blue Coast",
+        "Demandas",
+        "4",
+        32,
+        "legacy-2527-25"
+      ],
+      [
+        "work",
+        "4.3 - AR-003-2025 - Serviço de Manutenção Helicóptero B4",
+        "Demandas",
+        "4",
+        33,
+        "legacy-2527-26"
+      ],
+      [
+        "work",
+        "4.4 - AR-004-2026 - Instalação da Fachada Ventilada do Blue Coast",
+        "Demandas",
+        "4",
+        34,
+        "legacy-2527-27"
+      ],
+      [
+        "work",
+        "4.5 - AR-005-2026 - Instalação das Esquadrias de Alumínio do Blue Coast",
+        "Demandas",
+        "4",
+        35,
+        "legacy-2527-28"
+      ],
+      [
+        "work",
+        "4.6 - AR-006-2026 - Análise do Contrato entre Roga Gigante (BC BIG WHEEL x FG)",
+        "Demandas",
+        "4",
+        36,
+        "legacy-2527-29"
+      ],
+      [
+        "work",
+        "4.7 - AR-007-2026 - Análise do Contrato e Controles Internos (TV Ind._RIC x METRA PUBLICIDADE x FG)",
+        "Demandas",
+        "4",
+        37,
+        "legacy-2527-30"
+      ],
+      [
+        "work",
+        "4.8 - AR-008-2026 - Análise do Rateio de Mídia e Propaganda MKT (FG Holding e Senna)",
+        "Demandas",
+        "4",
+        38,
+        "legacy-2527-31"
+      ],
+      [
+        "work",
+        "4.9 - Análise Homologação de Clientes PF/PJ (Análise de crédito)",
+        "Demandas",
+        "4",
+        39,
+        "legacy-2527-32"
+      ],
+      [
+        "work",
+        "4.10 - AR-010-2026 - Fiscalização Móveis Planejados SAPPHIRE TOWER (Shafts e Áreas de Laser)",
+        "Demandas",
+        "4",
+        40,
+        "legacy-2527-33"
+      ],
+      [
+        "work",
+        "4.11 - AR-011-2026 - Fiscalização Móveis Planejados SCENARIUM (Shafts e Áreas de Laser)",
+        "Demandas",
+        "4",
+        41,
+        "legacy-2527-34"
+      ],
+      [
+        "work",
+        "4.12 - AR-012-2026 - Fiscalização da Entrega das Chaves clientes SAPPHIRE TOWER (foco na qualidade)",
+        "Demandas",
+        "4",
+        42,
+        "legacy-2527-35"
+      ],
+      [
+        "section",
+        "5. GERENCIAMENTO DE RISCOS:",
+        "Gerenciamento de Riscos",
+        "5",
+        43,
+        ""
+      ],
+      [
+        "work",
+        "5.1 - Mapeamento dos Riscos Operacionais",
+        "Gerenciamento de Riscos",
+        "5",
+        44,
+        "legacy-2527-36"
+      ],
+      [
+        "work",
+        "5.2 - Mapeamento dos Riscos Estratégicos",
+        "Gerenciamento de Riscos",
+        "5",
+        45,
+        "legacy-2527-37"
+      ],
+      [
+        "work",
+        "8. Reavaliação dos Riscos Operacionais",
+        "Gerenciamento de Riscos",
+        "8",
+        46,
+        "legacy-2527-38"
+      ],
+      [
+        "work",
+        "9. Reavaliação dos Riscos Estratégicos",
+        "Gerenciamento de Riscos",
+        "9",
+        47,
+        "legacy-2527-39"
+      ]
+    ],
+    "2026": [
+      [
+        "work",
+        "1. Planejamento dos Trabalhos de AI",
+        "Governança",
+        "1",
+        4,
+        "legacy-2527-0"
+      ],
+      [
+        "section",
+        "2. Execução de Auditoria Interna nos Processos Administrativos do Escritório Central (ADM):",
+        "ADM",
+        "2",
+        5,
+        ""
+      ],
+      [
+        "work",
+        "2.1 - Auditoria dos processos de compras da Assistência Técnica (AI-001_2025)",
+        "ADM",
+        "2",
+        6,
+        "legacy-2527-1"
+      ],
+      [
+        "work",
+        "2.2 - Auditoria dos processos de compras de Suprimentos para a Assistência Técnica (AI-002_2025)",
+        "ADM",
+        "2",
+        7,
+        "legacy-2527-2"
+      ],
+      [
+        "work",
+        "2.3 - Auditoria dos processos de compras de Áreas Comuns e Paisagismo para o SUP (AI-003_2025)",
+        "ADM",
+        "2",
+        8,
+        "legacy-2527-3"
+      ],
+      [
+        "work",
+        "2.4 - Auditoria dos processos de compras do Marketing (AI-004_2025)",
+        "ADM",
+        "2",
+        9,
+        "legacy-2527-4"
+      ],
+      [
+        "work",
+        "2.5 - Auditoria dos processos de Homologação Fornecedores/Contratos (AI-005_2025)",
+        "ADM",
+        "2",
+        10,
+        "legacy-2527-5"
+      ],
+      [
+        "work",
+        "2.6 - Auditoria dos processos de pagamentos das Comissões nas Vendas Efetivadas (AI-006_2025)",
+        "ADM",
+        "2",
+        11,
+        "legacy-2527-6"
+      ],
+      [
+        "work",
+        "2.7 - Auditoria dos processos de Contratação, Folha, Clima Org. e Controle internos do DHO (AI-009_2026)",
+        "ADM",
+        "2",
+        12,
+        "legacy-2527-7"
+      ],
+      [
+        "work",
+        "2.8 - Auditoria dos processos do Financeiro/Contas a pagar (AI-015_2026)",
+        "ADM",
+        "2",
+        13,
+        "legacy-2527-8"
+      ],
+      [
+        "work",
+        "2.9 - Auditoria dos processos do Financeiro/Contas a receber (AI-014_2026)",
+        "ADM",
+        "2",
+        14,
+        "legacy-2527-9"
+      ],
+      [
+        "work",
+        "2.10 - Auditoria dos processos de Controle Patrimonial - Depósitos Patrimônio e MKT (AI-016_2026)",
+        "ADM",
+        "2",
+        15,
+        "legacy-2527-10"
+      ],
+      [
+        "work",
+        "2.11 - Auditoria dos controles internos APROBRAVA (AI-011_2026)",
+        "ADM",
+        "2",
+        16,
+        "legacy-2527-11"
+      ],
+      [
+        "work",
+        "2.12 - Auditoria dos processos de compras da Assistência Técnica (AI-012_2026) - Ciclo 1",
+        "ADM",
+        "2",
+        17,
+        "legacy-2527-12"
+      ],
+      [
+        "work",
+        "2.13 - Auditoria dos processos referente aos contratos de Permuta Terreno/Fornecedores (SOLICITADO JEAN)",
+        "ADM",
+        "2",
+        18,
+        "legacy-2527-13"
+      ],
+      [
+        "work",
+        "Follow-up e Acompanhamento dos Planos de Ações ADM 2025/2026",
+        "ADM",
+        "2",
+        19,
+        "legacy-2527-14"
+      ],
+      [
+        "section",
+        "3. Execução de Auditoria Internas nos Processos Operacionais - Obras:",
+        "Obras",
+        "3",
+        20,
+        ""
+      ],
+      [
+        "work",
+        "3.1 - Auditoria dos processos de SESMT nas Obras (EPIs e EPCs) e Aplicação das NRs (AI-007_2025)",
+        "Obras",
+        "3",
+        21,
+        "legacy-2527-15"
+      ],
+      [
+        "work",
+        "3.2 - Auditoria dos processos de Treinamentos de SESMT (FG e Terceirizados) (AI-007_2025)",
+        "Obras",
+        "3",
+        22,
+        "legacy-2527-16"
+      ],
+      [
+        "work",
+        "3.3 - Auditoria dos Contratos de Terceirizados, Adendos e Distratos ocorridos em 2025 (AI-008_2026)",
+        "Obras",
+        "3",
+        23,
+        "legacy-2527-17"
+      ],
+      [
+        "work",
+        "3.4 - Auditoria dos processos de Medição de Obras BLUE VIEW, ICONIC e TITANIUM (AI-010_2026)",
+        "Obras",
+        "3",
+        24,
+        "legacy-2527-18"
+      ],
+      [
+        "work",
+        "3.5 - Auditoria dos processos de Medição de Obras IMPERIUM e GARDEN PARK (AI-013_2026)",
+        "Obras",
+        "3",
+        25,
+        "legacy-2527-19"
+      ],
+      [
+        "work",
+        "3.6 - Auditoria dos processos de Medição de Obras NORTH TOWER e SENNA TOWER (AI-017_2026)",
+        "Obras",
+        "3",
+        26,
+        "legacy-2527-20"
+      ],
+      [
+        "work",
+        "3.7 - Auditoria Interna - Controle do Estoque Ferramental",
+        "Obras",
+        "3",
+        27,
+        "legacy-2527-21"
+      ],
+      [
+        "work",
+        "3.8 - Auditoria dos processos do Cronograma Avanço Físico-Financeiro (NORTH TOWER)",
+        "Obras",
+        "3",
+        28,
+        "legacy-2527-22"
+      ],
+      [
+        "work",
+        "Follow-up e Acompanhamento dos Planos de Ações Obras 2025/2026",
+        "Obras",
+        "3",
+        29,
+        "legacy-2527-23"
+      ],
+      [
+        "section",
+        "4. Demandas Solicitadas pela Alta Administração (Análises Rápidas):",
+        "Demandas",
+        "4",
+        30,
+        ""
+      ],
+      [
+        "work",
+        "4.1 - AR-001-2025 - Serviço de Pintura Helicóptero B4",
+        "Demandas",
+        "4",
+        31,
+        "legacy-2527-24"
+      ],
+      [
+        "work",
+        "4.2 - AR-002-2025 - Móveis Planejados Blue Coast",
+        "Demandas",
+        "4",
+        32,
+        "legacy-2527-25"
+      ],
+      [
+        "work",
+        "4.3 - AR-003-2025 - Serviço de Manutenção Helicóptero B4",
+        "Demandas",
+        "4",
+        33,
+        "legacy-2527-26"
+      ],
+      [
+        "work",
+        "4.4 - AR-004-2026 - Instalação da Fachada Ventilada do Blue Coast",
+        "Demandas",
+        "4",
+        34,
+        "legacy-2527-27"
+      ],
+      [
+        "work",
+        "4.5 - AR-005-2026 - Instalação das Esquadrias de Alumínio do Blue Coast",
+        "Demandas",
+        "4",
+        35,
+        "legacy-2527-28"
+      ],
+      [
+        "work",
+        "4.6 - AR-006-2026 - Análise do Contrato entre Roga Gigante (BC BIG WHEEL x FG)",
+        "Demandas",
+        "4",
+        36,
+        "legacy-2527-29"
+      ],
+      [
+        "work",
+        "4.7 - AR-007-2026 - Análise do Contrato e Controles Internos (TV Ind._RIC x METRA PUBLICIDADE x FG)",
+        "Demandas",
+        "4",
+        37,
+        "legacy-2527-30"
+      ],
+      [
+        "work",
+        "4.8 - AR-008-2026 - Análise do Rateio de Mídia e Propaganda MKT (FG Holding e Senna)",
+        "Demandas",
+        "4",
+        38,
+        "legacy-2527-31"
+      ],
+      [
+        "work",
+        "4.9 - Análise Homologação de Clientes PF/PJ (Análise de crédito)",
+        "Demandas",
+        "4",
+        39,
+        "legacy-2527-32"
+      ],
+      [
+        "work",
+        "4.10 - AR-010-2026 - Fiscalização Móveis Planejados SAPPHIRE TOWER (Shafts e Áreas de Laser)",
+        "Demandas",
+        "4",
+        40,
+        "legacy-2527-33"
+      ],
+      [
+        "work",
+        "4.11 - AR-011-2026 - Fiscalização Móveis Planejados SCENARIUM (Shafts e Áreas de Laser)",
+        "Demandas",
+        "4",
+        41,
+        "legacy-2527-34"
+      ],
+      [
+        "work",
+        "4.12 - AR-012-2026 - Fiscalização da Entrega das Chaves clientes SAPPHIRE TOWER (foco na qualidade)",
+        "Demandas",
+        "4",
+        42,
+        "legacy-2527-35"
+      ],
+      [
+        "section",
+        "5. GERENCIAMENTO DE RISCOS:",
+        "Gerenciamento de Riscos",
+        "5",
+        43,
+        ""
+      ],
+      [
+        "work",
+        "5.1 - Mapeamento dos Riscos Operacionais",
+        "Gerenciamento de Riscos",
+        "5",
+        44,
+        "legacy-2527-36"
+      ],
+      [
+        "work",
+        "5.2 - Mapeamento dos Riscos Estratégicos",
+        "Gerenciamento de Riscos",
+        "5",
+        45,
+        "legacy-2527-37"
+      ],
+      [
+        "work",
+        "8. Reavaliação dos Riscos Operacionais",
+        "Gerenciamento de Riscos",
+        "8",
+        46,
+        "legacy-2527-38"
+      ],
+      [
+        "work",
+        "9. Reavaliação dos Riscos Estratégicos",
+        "Gerenciamento de Riscos",
+        "9",
+        47,
+        "legacy-2527-39"
+      ]
+    ],
     "2027": [
       [
         "work",
@@ -791,360 +1499,6 @@
         "5",
         33,
         "legacy-2027-25"
-      ]
-    ],
-    "2025-2026": [
-      [
-        "work",
-        "1. Planejamento dos Trabalhos de AI",
-        "Governança",
-        "1",
-        4,
-        "legacy-2527-0"
-      ],
-      [
-        "section",
-        "2. Execução de Auditoria Interna nos Processos Administrativos do Escritório Central (ADM):",
-        "ADM",
-        "2",
-        5,
-        ""
-      ],
-      [
-        "work",
-        "2.1 - Auditoria dos processos de compras da Assistência Técnica (AI-001_2025)",
-        "ADM",
-        "2",
-        6,
-        "legacy-2527-1"
-      ],
-      [
-        "work",
-        "2.2 - Auditoria dos processos de compras de Suprimentos para a Assistência Técnica (AI-002_2025)",
-        "ADM",
-        "2",
-        7,
-        "legacy-2527-2"
-      ],
-      [
-        "work",
-        "2.3 - Auditoria dos processos de compras de Áreas Comuns e Paisagismo para o SUP (AI-003_2025)",
-        "ADM",
-        "2",
-        8,
-        "legacy-2527-3"
-      ],
-      [
-        "work",
-        "2.4 - Auditoria dos processos de compras do Marketing (AI-004_2025)",
-        "ADM",
-        "2",
-        9,
-        "legacy-2527-4"
-      ],
-      [
-        "work",
-        "2.5 - Auditoria dos processos de Homologação Fornecedores/Contratos (AI-005_2025)",
-        "ADM",
-        "2",
-        10,
-        "legacy-2527-5"
-      ],
-      [
-        "work",
-        "2.6 - Auditoria dos processos de pagamentos das Comissões nas Vendas Efetivadas (AI-006_2025)",
-        "ADM",
-        "2",
-        11,
-        "legacy-2527-6"
-      ],
-      [
-        "work",
-        "2.7 - Auditoria dos processos de Contratação, Folha, Clima Org. e Controle internos do DHO (AI-009_2026)",
-        "ADM",
-        "2",
-        12,
-        "legacy-2527-7"
-      ],
-      [
-        "work",
-        "2.8 - Auditoria dos processos do Financeiro/Contas a pagar (AI-015_2026)",
-        "ADM",
-        "2",
-        13,
-        "legacy-2527-8"
-      ],
-      [
-        "work",
-        "2.9 - Auditoria dos processos do Financeiro/Contas a receber (AI-014_2026)",
-        "ADM",
-        "2",
-        14,
-        "legacy-2527-9"
-      ],
-      [
-        "work",
-        "2.10 - Auditoria dos processos de Controle Patrimonial - Depósitos Patrimônio e MKT (AI-016_2026)",
-        "ADM",
-        "2",
-        15,
-        "legacy-2527-10"
-      ],
-      [
-        "work",
-        "2.11 - Auditoria dos controles internos APROBRAVA (AI-011_2026)",
-        "ADM",
-        "2",
-        16,
-        "legacy-2527-11"
-      ],
-      [
-        "work",
-        "2.12 - Auditoria dos processos de compras da Assistência Técnica (AI-012_2026) - Ciclo 1",
-        "ADM",
-        "2",
-        17,
-        "legacy-2527-12"
-      ],
-      [
-        "work",
-        "2.13 - Auditoria dos processos referente aos contratos de Permuta Terreno/Fornecedores (SOLICITADO JEAN)",
-        "ADM",
-        "2",
-        18,
-        "legacy-2527-13"
-      ],
-      [
-        "work",
-        "Follow-up e Acompanhamento dos Planos de Ações ADM 2024/2025/2026",
-        "ADM",
-        "2",
-        19,
-        "legacy-2527-14"
-      ],
-      [
-        "section",
-        "3. Execução de Auditoria Internas nos Processos Operacionais - Obras:",
-        "Obras",
-        "3",
-        20,
-        ""
-      ],
-      [
-        "work",
-        "3.1 - Auditoria dos processos de SESMT nas Obras (EPIs e EPCs) e Aplicação das NRs (AI-007_2025)",
-        "Obras",
-        "3",
-        21,
-        "legacy-2527-15"
-      ],
-      [
-        "work",
-        "3.2 - Auditoria dos processos de Treinamentos de SESMT (FG e Terceirizados) (AI-007_2025)",
-        "Obras",
-        "3",
-        22,
-        "legacy-2527-16"
-      ],
-      [
-        "work",
-        "3.3 - Auditoria dos Contratos de Terceirizados, Adendos e Distratos ocorridos em 2025 (AI-008_2026)",
-        "Obras",
-        "3",
-        23,
-        "legacy-2527-17"
-      ],
-      [
-        "work",
-        "3.4 - Auditoria dos processos de Medição de Obras BLUE VIEW, ICONIC e TITANIUM (AI-010_2026)",
-        "Obras",
-        "3",
-        24,
-        "legacy-2527-18"
-      ],
-      [
-        "work",
-        "3.5 - Auditoria dos processos de Medição de Obras IMPERIUM e GARDEN PARK (AI-013_2026)",
-        "Obras",
-        "3",
-        25,
-        "legacy-2527-19"
-      ],
-      [
-        "work",
-        "3.6 - Auditoria dos processos de Medição de Obras NORTH TOWER e SENNA TOWER (AI-017_2026)",
-        "Obras",
-        "3",
-        26,
-        "legacy-2527-20"
-      ],
-      [
-        "work",
-        "3.7 - Auditoria Interna - Controle do Estoque Ferramental",
-        "Obras",
-        "3",
-        27,
-        "legacy-2527-21"
-      ],
-      [
-        "work",
-        "3.8 - Auditoria dos processos do Cronograma Avanço Físico-Financeiro (NORTH TOWER)",
-        "Obras",
-        "3",
-        28,
-        "legacy-2527-22"
-      ],
-      [
-        "work",
-        "Follow-up e Acompanhamento dos Planos de Ações Obras 2024/2025/2026",
-        "Obras",
-        "3",
-        29,
-        "legacy-2527-23"
-      ],
-      [
-        "section",
-        "4. Demandas Solicitadas pela Alta Administração (Análises Rápidas):",
-        "Demandas",
-        "4",
-        30,
-        ""
-      ],
-      [
-        "work",
-        "4.1 - AR-001-2025 - Serviço de Pintura Helicóptero B4",
-        "Demandas",
-        "4",
-        31,
-        "legacy-2527-24"
-      ],
-      [
-        "work",
-        "4.2 - AR-002-2025 - Móveis Planejados Blue Coast",
-        "Demandas",
-        "4",
-        32,
-        "legacy-2527-25"
-      ],
-      [
-        "work",
-        "4.3 - AR-003-2025 - Serviço de Manutenção Helicóptero B4",
-        "Demandas",
-        "4",
-        33,
-        "legacy-2527-26"
-      ],
-      [
-        "work",
-        "4.4 - AR-004-2026 - Instalação da Fachada Ventilada do Blue Coast",
-        "Demandas",
-        "4",
-        34,
-        "legacy-2527-27"
-      ],
-      [
-        "work",
-        "4.5 - AR-005-2026 - Instalação das Esquadrias de Alumínio do Blue Coast",
-        "Demandas",
-        "4",
-        35,
-        "legacy-2527-28"
-      ],
-      [
-        "work",
-        "4.6 - AR-006-2026 - Análise do Contrato entre Roga Gigante (BC BIG WHEEL x FG)",
-        "Demandas",
-        "4",
-        36,
-        "legacy-2527-29"
-      ],
-      [
-        "work",
-        "4.7 - AR-007-2026 - Análise do Contrato e Controles Internos (TV Ind._RIC x METRA PUBLICIDADE x FG)",
-        "Demandas",
-        "4",
-        37,
-        "legacy-2527-30"
-      ],
-      [
-        "work",
-        "4.8 - AR-008-2026 - Análise do Rateio de Mídia e Propaganda MKT (FG Holding e Senna)",
-        "Demandas",
-        "4",
-        38,
-        "legacy-2527-31"
-      ],
-      [
-        "work",
-        "4.9 - Análise Homologação de Clientes PF/PJ (Análise de crédito)",
-        "Demandas",
-        "4",
-        39,
-        "legacy-2527-32"
-      ],
-      [
-        "work",
-        "4.10 - AR-010-2026 - Fiscalização Móveis Planejados SAPPHIRE TOWER (Shafts e Áreas de Laser)",
-        "Demandas",
-        "4",
-        40,
-        "legacy-2527-33"
-      ],
-      [
-        "work",
-        "4.11 - AR-011-2026 - Fiscalização Móveis Planejados SCENARIUM (Shafts e Áreas de Laser)",
-        "Demandas",
-        "4",
-        41,
-        "legacy-2527-34"
-      ],
-      [
-        "work",
-        "4.12 - AR-012-2026 - Fiscalização da Entrega das Chaves clientes SAPPHIRE TOWER (foco na qualidade)",
-        "Demandas",
-        "4",
-        42,
-        "legacy-2527-35"
-      ],
-      [
-        "section",
-        "5. GERENCIAMENTO DE RISCOS:",
-        "Gerenciamento de Riscos",
-        "5",
-        43,
-        ""
-      ],
-      [
-        "work",
-        "5.1 - Mapeamento dos Riscos Operacionais",
-        "Gerenciamento de Riscos",
-        "5",
-        44,
-        "legacy-2527-36"
-      ],
-      [
-        "work",
-        "5.2 - Mapeamento dos Riscos Estratégicos",
-        "Gerenciamento de Riscos",
-        "5",
-        45,
-        "legacy-2527-37"
-      ],
-      [
-        "work",
-        "8. Reavaliação dos Riscos Operacionais",
-        "Gerenciamento de Riscos",
-        "8",
-        46,
-        "legacy-2527-38"
-      ],
-      [
-        "work",
-        "9. Reavaliação dos Riscos Estratégicos",
-        "Gerenciamento de Riscos",
-        "9",
-        47,
-        "legacy-2527-39"
       ]
     ]
   }
