@@ -160,3 +160,16 @@ body{font-size:15px}
 .timeline-work-title-row .timeline-work-name{flex:1}
 .timeline-reschedule{flex:0 0 27px;width:27px;height:25px;border:1px solid #c6dce0;border-radius:5px;background:#e7f2f4;color:#135c6c;font:700 16px "DM Sans";cursor:pointer;opacity:.82}
 .timeline-reschedule:hover{background:#cfe5e9;border-color:#8eb9c0;opacity:1;transform:translateY(-1px)}
+
+
+/* Padronização do fundo das legendas do calendário com o painel executivo */
+.calendar-legend{
+  background:#163d4a;
+  border:1px solid #0e303a;
+  border-radius:10px;
+  padding:15px 17px;
+  color:#eaf2f4;
+  box-shadow:0 5px 14px rgba(16,47,58,.14);
+}
+.calendar-legend b{color:#fff}
+.calendar-legend span,.calendar-legend small{color:#d3e1e5}
