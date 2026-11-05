@@ -208,3 +208,16 @@ body{font-size:15px}
 .btn-danger-soft{background:#fff0ef;border:1px solid #e7c3c0;color:#9c403a;padding:10px 13px;font:700 12px "DM Sans",sans-serif;border-radius:6px;cursor:pointer;}
 .btn-danger-soft:hover:not(:disabled){background:#f8ddda;border-color:#d99a95;}
 .btn-danger-soft:disabled{opacity:.45;cursor:not-allowed;}
+
+
+/* Fundo sólido para a grade mensal do painel executivo */
+.timeline-table{background:#eaf1f3!important;border-collapse:separate!important;border-spacing:0 3px!important;}
+.timeline-table thead th{background:#dce7ea!important;color:#294b55!important;border-bottom:2px solid #b9cdd2!important;}
+.timeline-table tbody td{background:#f0f5f6!important;border-bottom:1px solid #d7e2e5!important;}
+.timeline-table tbody td:first-child{background:#dfeaec!important;border-left:4px solid #9bb8bf!important;}
+.timeline-table tbody tr:nth-child(even) td{background:#e7eff1!important;}
+.timeline-table tbody tr:nth-child(even) td:first-child{background:#d8e5e8!important;}
+.timeline-table tbody tr:hover td,.timeline-table tbody tr:hover td:first-child{background:#d2e2e5!important;}
+.timeline-table .timeline-mark.empty{background:#d5e2e5!important;color:#526e77!important;opacity:1!important;border:1px solid #bdcfd4!important;}
+.timeline-table .timeline-mark.none{background:#cbd8dc!important;color:#38545d!important;}
+.timeline-table .timeline-mark{box-shadow:0 1px 2px rgba(26,55,63,.08);}
