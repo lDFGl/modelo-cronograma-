@@ -221,3 +221,14 @@ body{font-size:15px}
 .timeline-table .timeline-mark.empty{background:#d5e2e5!important;color:#526e77!important;opacity:1!important;border:1px solid #bdcfd4!important;}
 .timeline-table .timeline-mark.none{background:#cbd8dc!important;color:#38545d!important;}
 .timeline-table .timeline-mark{box-shadow:0 1px 2px rgba(26,55,63,.08);}
+
+
+/* Visão consolidada de todos os exercícios no painel executivo */
+.timeline-year-section{margin:0 0 28px;padding:0 0 18px;border-bottom:2px solid #c8d8dd}
+.timeline-year-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 14px;padding:12px 16px;background:#163d4a;color:#fff;border-radius:8px;font:800 18px/1.2 Manrope,sans-serif;letter-spacing:.04em}
+.timeline-year-heading span{font:600 12px/1.3 "DM Sans",sans-serif;color:#d9e8ec;letter-spacing:0}
+.timeline-unplanned-list{display:grid;gap:8px;padding:12px}
+.timeline-unplanned-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;background:#eaf1f3;border:1px solid #cbdadd;border-radius:7px}
+.timeline-unplanned-row b{display:block;color:#203f48;font-size:14px}
+.timeline-unplanned-row small{display:block;margin-top:4px;color:#58717a;font-size:12px}
+@media(max-width:640px){.timeline-year-heading{font-size:16px}.timeline-unplanned-row{align-items:flex-start;flex-direction:column}}
