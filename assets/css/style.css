@@ -173,3 +173,25 @@ body{font-size:15px}
 }
 .calendar-legend b{color:#fff}
 .calendar-legend span,.calendar-legend small{color:#d3e1e5}
+
+
+/* Legenda do painel executivo: fundo padronizado e alto contraste */
+.roadmap-legend.interactive-legend{background:#163d4a;border:1px solid #0e303a;border-radius:10px;padding:13px 16px;margin:12px 0 15px;box-shadow:0 5px 14px rgba(16,47,58,.14);}
+.roadmap-legend.interactive-legend .legend-item{display:flex;align-items:center;gap:7px;color:#eaf2f4;font-size:11px;font-weight:600;}
+.roadmap-legend.interactive-legend .legend-item i{min-width:22px;height:22px;font-size:10px;border-radius:5px;}
+.roadmap-legend.interactive-legend .mark-none{background:#dce6e9;color:#38545d;}
+.timeline-table th{white-space:nowrap;}
+.timeline-table th .month-add{display:inline-grid;place-items:center;margin-left:4px;width:20px;height:20px;border:1px solid #c8d9dd;border-radius:5px;background:#edf5f6;color:#135c6c;font-size:14px;font-weight:700;cursor:pointer;vertical-align:middle;}
+.timeline-table th .month-add:hover{background:#135c6c;color:#fff;border-color:#135c6c;}
+.timeline-work-name[data-timeline-edit]{cursor:pointer;}
+.timeline-work-name[data-timeline-edit]:hover{color:#135c6c;text-decoration:underline;}
+.schedule-title-edit{display:grid;text-align:left;width:100%;border:0;background:transparent;padding:0;cursor:pointer;color:inherit;font:inherit;}
+.schedule-title-edit:hover strong{color:#135c6c;text-decoration:underline;}
+.timeline-mark{cursor:pointer;border:1px solid transparent;}
+.timeline-mark:hover{outline:2px solid #8ab7be;outline-offset:1px;transform:scale(1.08);}
+.month-editor{margin-top:16px;padding:15px;background:#f2f7f8;border:1px solid #dce9eb;border-radius:9px;}
+.month-editor-heading{display:grid;gap:4px;margin-bottom:12px;color:#254752;}
+.month-editor-heading b{font:800 12px Manrope;}
+.month-editor-heading small,.reschedule-help{font-size:10px;color:#71858c;line-height:1.5;}
+.reschedule-help{display:block;margin-top:9px;}
+@media(max-width:760px){.roadmap-legend.interactive-legend{gap:9px;padding:11px}.roadmap-legend.interactive-legend .legend-item{font-size:10px}.timeline-table th .month-add{width:18px;height:18px;margin-left:1px}}
