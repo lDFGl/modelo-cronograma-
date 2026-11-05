@@ -36,41 +36,31 @@ const latestMarkStatus = marks => {
 };
 const makeId = () => "fg-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,7);
 function buildInitialData(data){
-  const titleById = new Map();
-  Object.values(data.timelineStructure || {}).flat().forEach(row => {
-    if(row[0] === "work" && row[5]) titleById.set(row[5], row[1]);
+  const list=[];
+  (data.schedule2025_2027||[]).forEach((row,index)=>{
+    const [title,area,months] = row;
+    list.push({
+      id:"legacy-2527-"+index,title,area,type:"",
+      status:latestMarkStatus(months),priority:"media",months:months||{},
+      owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",
+      notes:"",source:"2025-2026",lockedSource:true
+    });
   });
-  const list = [];
-  (data.schedule2025_2027 || []).forEach((row,index)=>{
-    const [sourceTitle,area,marks] = row;
-    const id = "legacy-2527-" + index;
-    const title = titleById.get(id) || sourceTitle;
-    list.push({id,title,area,type:"",status:latestMarkStatus(marks),priority:"media",months:marks,owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",notes:"",source:"2025-2027",lockedSource:true});
+  (data.schedule2027||[]).forEach((row,index)=>{
+    const [title,area,type,monthKeys] = row;
+    const months={};(monthKeys||[]).forEach(key=>months[key]="P");
+    list.push({
+      id:"legacy-2027-"+index,title,area,type:type||"",
+      status:latestMarkStatus(months),priority:"media",months,
+      owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",
+      notes:"",source:"2027",lockedSource:true
+    });
   });
-  (data.schedule2027 || []).forEach((row,index)=>{
-    const [sourceTitle,area,type,months] = row;
-    const id = "legacy-2027-" + index;
-    const title = titleById.get(id) || sourceTitle;
-    const monthMap = {};
-    months.forEach(key=>monthMap[key]="P");
-    list.push({id,title,area,type,status:"planejamento",priority:"media",months:monthMap,owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",notes:"",source:"2027",lockedSource:true});
-  });
-  const normalize = value => String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-  const consolidated = new Map();
-  list.forEach(item=>{
-    const key = item.area + "|" + normalize(item.title);
-    if(consolidated.has(key)){
-      const existing = consolidated.get(key);
-      existing.months = {...(existing.months||{}),...(item.months||{})};
-      existing.type = item.type || existing.type;
-      existing.source = "2025-2027 + 2027";
-    }else consolidated.set(key,item);
-  });
-  return [...consolidated.values()];
+  return list;
 }
 async function initialize(){
   try{
-    const response = await fetch("data/historico.json?v=20261105-4",{cache:"no-store"});
+    const response = await fetch("data/historico.json?v=20261105-5",{cache:"no-store"});
     if(!response.ok) throw new Error("Não foi possível carregar o histórico.");
     sourceData = await response.json();
   }catch(error){
@@ -154,7 +144,7 @@ function filteredWorks(){
     const matchesStatus=!f.status||w.status===f.status;
     const haystack=[w.title,w.code,w.type,w.owner,w.area].join(" ").toLowerCase();
     return matchesArea&&matchesYear&&matchesStatus&&(!f.search||haystack.includes(f.search));
-  }).sort((a,b)=>a.title.localeCompare(b.title,"pt-BR"));
+  });
 }
 
 function workCategory(w){
@@ -171,47 +161,63 @@ function renderTimeline(){
   const board=$("#timeline-board");
   if(!board)return;
   const structure=sourceData?.timelineStructure||{};
-  const allYears=Object.keys(structure).sort();
-  const visibleYears=timelineYear==="all"?allYears:allYears.filter(year=>year===timelineYear);
-  const months=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+  const sheetKeys=timelineYear==="all"?["2025-2026","2027"]:[timelineYear];
   const normalize=value=>String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-  const findWork=(entry)=>{
-    const byId=entry[5]?works.find(item=>item.id===entry[5]):null;
-    return byId||works.find(item=>item.area===entry[2]&&normalize(item.title)===normalize(entry[1]));
+  const findWork=entry=>{
+    const id=entry[5];
+    return (id&&works.find(item=>item.id===id))||works.find(item=>item.area===entry[2]&&normalize(item.title)===normalize(entry[1]));
   };
-  board.innerHTML=visibleYears.map(year=>{
-    const rows=structure[year]||[];
+  const monthKeysGeneral=[];
+  [2025,2026,2027].forEach(year=>MONTH_NAMES.forEach((_,index)=>monthKeysGeneral.push(year+"-"+String(index+1).padStart(2,"0"))));
+  const monthKeys2027=MONTH_NAMES.map((_,index)=>"2027-"+String(index+1).padStart(2,"0"));
+  const monthHeader=key=>{
+    const month=Number(key.slice(5))-1;
+    return '<th class="month-head"><span>'+MONTH_NAMES[month]+'</span><button type="button" class="month-add" data-new-month="'+key+'" title="Adicionar trabalho em '+MONTH_NAMES[month]+'/'+key.slice(0,4)+'">＋</button></th>';
+  };
+  const markCell=(work,key)=>{
+    const mark=work?.months?.[key]||"";
+    const cls=mark==="✔"?"done":mark==="-"?"none":mark||"";
+    return '<td class="month-cell"><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" '+(work?'data-timeline-cell="'+escapeHtml(work.id)+'"':'disabled')+' data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';
+  };
+  const workRow=(entry,keys,withType)=>{
+    const [kind,title,area,section,order]=entry;
+    if(kind==="section"){
+      return '<tr class="timeline-section-row"><td colspan="'+(keys.length+(withType?2:1))+'"><span class="timeline-section-number">'+escapeHtml((title.match(/^\\d+(?:\\.\\d+)?/)||[""])[0])+'</span>'+escapeHtml(title.replace(/^\\d+(?:\\.\\d+)?\\.?\\s*/,""))+'</td></tr>';
+    }
+    const work=findWork(entry);
+    const displayTitle=work?.title||title;
+    const name='<button type="button" class="timeline-work-open" '+(work?'data-timeline-edit="'+escapeHtml(work.id)+'"':'disabled')+'>'+escapeHtml(displayTitle)+'</button><small class="timeline-work-meta">'+escapeHtml(AREA_LABELS[area]||area)+'</small>';
+    const typeCell=withType?'<td class="timeline-type-cell">'+escapeHtml(work?.type||"")+'</td>':"";
+    const cells=keys.map(key=>markCell(work,key)).join("");
+    return '<tr class="timeline-work-row"><td class="timeline-title-cell">'+name+'</td>'+typeCell+cells+'</tr>';
+  };
+  const renderSheet=key=>{
+    const rows=structure[key]||[];
+    if(!rows.length)return "";
+    const isGeneral=key==="2025-2026";
+    const keys=isGeneral?monthKeysGeneral:monthKeys2027;
     const workCount=rows.filter(row=>row[0]==="work").length;
-    let body=rows.map(entry=>{
-      const [kind,title,area,section,order,sourceId]=entry;
-      if(kind==="section"){
-        const priority=section==="4"?" priority-high":"";
-        return '<tr class="timeline-section-row'+priority+'"><td colspan="13"><span class="timeline-section-number">'+escapeHtml(section)+'</span>'+escapeHtml(title.replace(/^\\d+\\.\\s*/,""))+'</td></tr>';
-      }
-      const work=findWork(entry);
-      const shownTitle=work?.title||title;
-      const meta=AREA_LABELS[area]||area;
-      const cells=months.map((month,index)=>{
-        const key=year+"-"+String(index+1).padStart(2,"0");
-        const mark=work?.months?.[key]||"";
-        const cls=mark==="✔"?"done":mark==="-"?"none":mark||"";
-        return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" '+(work?'data-timeline-cell="'+escapeHtml(work.id)+'"':'disabled')+' data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';
-      }).join("");
-      return '<tr class="timeline-work-row"><td><div class="timeline-work-title-row"><div class="timeline-work-name" '+(work?'role="button" tabindex="0" data-timeline-edit="'+escapeHtml(work.id)+'"':'')+'>'+escapeHtml(shownTitle)+'</div>'+(work?'<button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(work.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button>':"")+'</div><div class="timeline-work-meta">'+escapeHtml(meta)+'</div></td>'+cells+'</tr>';
-    }).join("");
-    const manualForYear=works.filter(item=>!item.lockedSource&&Object.keys(item.months||{}).some(key=>key.startsWith(year))).sort(prioritySort);
-    if(manualForYear.length){
-      body+='<tr class="timeline-section-row"><td colspan="13">TRABALHOS ADICIONADOS NO PAINEL</td></tr>';
-      body+=manualForYear.map(work=>{
-        const cells=months.map((month,index)=>{
-          const key=year+"-"+String(index+1).padStart(2,"0"),mark=work.months?.[key]||"",cls=mark==="✔"?"done":mark==="-"?"none":mark||"";
-          return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" data-timeline-cell="'+escapeHtml(work.id)+'" data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';
-        }).join("");
-        return '<tr class="timeline-work-row"><td><div class="timeline-work-title-row"><div class="timeline-work-name" role="button" tabindex="0" data-timeline-edit="'+escapeHtml(work.id)+'">'+escapeHtml(work.title)+'</div><button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(work.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button></div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[work.area]||work.area)+'</div></td>'+cells+'</tr>';
+    let header;
+    if(isGeneral){
+      header='<thead><tr><th class="title-head" rowspan="2">TRABALHO / ÁREA</th>'+[2025,2026,2027].map(y=>'<th class="year-head" colspan="12">'+y+'</th>').join("")+'</tr><tr>'+keys.map(monthHeader).join("")+'</tr></thead>';
+    }else{
+      header='<thead><tr><th class="title-head" rowspan="2">TRABALHO / ÁREA</th><th class="type-head" rowspan="2">TIPO DE TRABALHO</th><th class="year-head" colspan="12">2027</th></tr><tr>'+keys.map(monthHeader).join("")+'</tr></thead>';
+    }
+    let body=rows.map(row=>workRow(row,keys,!isGeneral)).join("");
+    const manualYears=isGeneral?["2025","2026"]:["2027"];
+    const manual=works.filter(item=>!item.lockedSource&&Object.keys(item.months||{}).some(m=>manualYears.some(y=>m.startsWith(y))));
+    if(manual.length){
+      body+='<tr class="timeline-section-row"><td colspan="'+(keys.length+(isGeneral?1:2))+'"><span class="timeline-section-number">+</span>TRABALHOS ADICIONADOS NO PAINEL</td></tr>';
+      body+=manual.map(item=>{
+        const pseudo=["work",item.title,item.area,"","",item.id];
+        return workRow(pseudo,keys,!isGeneral);
       }).join("");
     }
-    return '<section class="timeline-year-section"><div class="timeline-year-heading">'+year+'<span>'+workCount+' trabalhos · estrutura original da planilha</span></div><table class="timeline-table timeline-structured-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map((month,index)=>'<th><span>'+month+'</span><button type="button" class="month-add" data-new-month="'+year+'-'+String(index+1).padStart(2,"0")+'" title="Adicionar trabalho em '+month+'">＋</button></th>').join("")+'</tr></thead><tbody>'+body+'</tbody></table></section>';
-  }).join("")||'<section class="timeline-group"><div class="timeline-empty">Nenhum trabalho encontrado para o filtro selecionado.</div></section>';
+    const title=isGeneral?"CRONOGRAMA GERAL FG 2025–2026":"CRONOGRAMA FG 2027";
+    const subtitle=isGeneral?"40 atividades · 36 meses (2025, 2026 e 2027) · ordem da planilha original":"26 atividades · 12 meses · tipo de trabalho conforme a planilha";
+    return '<section class="timeline-sheet"><div class="timeline-sheet-heading"><div><h3>'+title+'</h3><p>'+subtitle+'</p></div><span class="timeline-sheet-count">'+(workCount+manual.length)+' atividades</span></div><div class="timeline-sheet-scroll"><table class="timeline-table timeline-structured-table '+(isGeneral?"general-sheet":"year-2027-sheet")+'">'+header+'<tbody>'+body+'</tbody></table></div></section>';
+  };
+  board.innerHTML=sheetKeys.map(renderSheet).join("")||'<div class="empty-box">Nenhum cronograma encontrado.</div>';
 }
 function renderAll(){renderDashboard();renderTimeline();renderSchedules();}
 function renderDashboard(){
