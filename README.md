@@ -12,9 +12,9 @@ Aplicação estática para gestão de cronogramas por área, com painel executiv
 - Histórico de origem incorporado em `data/historico.json`.
 
 ## Publicação
-1. Em **Settings > Pages**, selecione **Deploy from a branch**.
-2. Branch: `main`; pasta: `/ (root)`.
-3. Salve e aguarde a publicação.
+1. Acesse **Settings > Pages**.
+2. Em **Build and deployment > Source**, selecione **GitHub Actions**.
+3. O workflow `.github/workflows/pages.yml` publicará automaticamente a aplicação após os commits na branch `main`.
 
 ## Armazenamento e segurança
 Os dados novos e as alterações ficam no navegador/dispositivo utilizado. Não existe sincronização entre usuários ou computadores nesta fase. Faça exportações JSON periódicas e mantenha cópias seguras. O repositório contém o modelo inicial e os dados históricos importados; não armazene dados pessoais ou sigilosos nesta aplicação pública.
