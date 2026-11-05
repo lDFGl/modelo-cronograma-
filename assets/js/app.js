@@ -83,6 +83,7 @@ async function initialize(){
   }
   $("#today-label").textContent = new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"short",year:"numeric"}).format(new Date());
   populateAreaFilter();
+  populateCalendarFilters();
   renderAll();
 }
 function persist(){
@@ -100,9 +101,10 @@ function setView(view){
   currentView=view;
   document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id===view+"-view"));
   document.querySelectorAll(".nav-link[data-view]").forEach(el=>el.classList.toggle("active",el.dataset.view===view));
-  const titles={dashboard:["Painel executivo","Visão consolidada dos trabalhos, prazos e entregáveis."],schedules:["Cronogramas por área","Consulte, crie e atualize os trabalhos e suas programações."],history:["Histórico importado","Consulta das estruturas e etapas legadas da planilha de origem."]};
+  const titles={dashboard:["Painel executivo","Visão consolidada dos trabalhos, prazos e entregáveis."],schedules:["Cronogramas por área","Consulte, crie e atualize os trabalhos e suas programações."],calendar:["Calendário de programações","Visualize compromissos futuros por mês, ano e área."],history:["Histórico importado","Consulta das estruturas e etapas legadas da planilha de origem."]};
   $("#page-title").textContent=titles[view][0]; $("#page-subtitle").textContent=titles[view][1];
   if(view==="schedules") renderSchedules();
+  if(view==="calendar") renderCalendar();
 }
 function getFilters(){
   return {area:$("#filter-area").value,year:$("#filter-year").value,status:$("#filter-status").value,search:$("#search-work").value.trim().toLowerCase()};
@@ -117,7 +119,7 @@ function filteredWorks(){
     return matchesArea&&matchesYear&&matchesStatus&&(!f.search||haystack.includes(f.search));
   }).sort((a,b)=>a.title.localeCompare(b.title,"pt-BR"));
 }
-function renderAll(){renderDashboard();renderSchedules();renderHistory();}
+function renderAll(){renderDashboard();renderSchedules();renderHistory();if(currentView==="calendar")renderCalendar();}
 function renderDashboard(){
   const total=works.length;
   const count=s=>works.filter(w=>w.status===s).length;
@@ -149,6 +151,102 @@ function renderSchedules(){
     return '<article class="schedule-card"><div><h3>'+escapeHtml(w.title)+'</h3><div class="schedule-meta"><span>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</span>'+(w.code?'<span>'+escapeHtml(w.code)+'</span>':'')+(w.type?'<span>'+escapeHtml(w.type)+'</span>':'')+(w.owner?'<span>Responsável: '+escapeHtml(w.owner)+'</span>':'')+'</div>'+(months?'<div class="month-pills">'+months+'</div>':'')+'</div><div class="schedule-right"><span class="badge '+status.className+'">'+status.label+'</span><div class="card-actions"><button class="icon-btn" data-edit="'+escapeHtml(w.id)+'" title="Editar">✎</button><button class="icon-btn" data-delete="'+escapeHtml(w.id)+'" title="Excluir">×</button></div></div></article>';
   }).join(""):'<div class="empty-box"><b>Nenhum trabalho encontrado</b>Ajuste os filtros ou cadastre um novo trabalho.</div>';
 }
+
+function populateCalendarFilters(){
+  const years=new Set();
+  works.forEach(w=>{
+    Object.keys(w.months||{}).forEach(m=>years.add(m.slice(0,4)));
+    if(w.start)years.add(w.start.slice(0,4));
+    if(w.end)years.add(w.end.slice(0,4));
+  });
+  const currentYear=String(new Date().getFullYear());
+  years.add(currentYear);
+  const yearList=[...years].sort();
+  $("#calendar-year").innerHTML=yearList.map(y=>'<option value="'+y+'">'+y+'</option>').join("");
+  $("#calendar-year").value=yearList.includes(currentYear)?currentYear:yearList.at(-1);
+  $("#calendar-month").innerHTML=MONTH_NAMES.map((m,i)=>'<option value="'+String(i+1).padStart(2,"0")+'">'+m.charAt(0)+m.slice(1).toLowerCase()+'</option>').join("");
+  $("#calendar-month").value=String(new Date().getMonth()+1).padStart(2,"0");
+  $("#calendar-area").innerHTML='<option value="">Todas as áreas</option>'+AREAS.map(a=>'<option value="'+escapeHtml(a)+'">'+escapeHtml(AREA_LABELS[a]||a)+'</option>').join("");
+}
+function calendarMonthWorks(){
+  const year=$("#calendar-year").value,month=$("#calendar-month").value,key=year+"-"+month;
+  const area=$("#calendar-area").value, futureOnly=$("#calendar-future-only").checked;
+  const today=new Date();today.setHours(0,0,0,0);
+  return works.filter(w=>{
+    if(area&&w.area!==area)return false;
+    const hasExact=!!(w.start||w.end);
+    let inMonth=false,displayDate="",monthOnly=false;
+    if(hasExact){
+      const start=w.start||w.end,end=w.end||w.start;
+      inMonth=!!start&&!!end&&start.slice(0,7)<=key&&end.slice(0,7)>=key;
+      displayDate=start||"";
+    }else if((w.months||{})[key]){
+      inMonth=true;displayDate=key+"-01";monthOnly=true;
+    }
+    if(!inMonth)return false;
+    if(futureOnly){
+      if(w.status==="concluido")return false;
+      if(hasExact&&endOfWork(w)<today)return false;
+      if(monthOnly&&key<today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0"))return false;
+    }
+    return true;
+  }).map(w=>{
+    const exact=!!(w.start||w.end);
+    return {...w,calendarDate:w.start||w.end||key+"-01",monthOnly:!exact};
+  }).sort((a,b)=>a.calendarDate.localeCompare(b.calendarDate)||a.title.localeCompare(b.title,"pt-BR"));
+}
+function endOfWork(w){
+  const value=w.end||w.start;
+  return value?new Date(value+"T23:59:59"):new Date(0);
+}
+function renderCalendar(){
+  if(!$("#calendar-grid"))return;
+  const year=Number($("#calendar-year").value),month=Number($("#calendar-month").value);
+  if(!year||!month)return;
+  const key=String(year)+"-"+String(month).padStart(2,"0");
+  const items=calendarMonthWorks();
+  const first=new Date(year,month-1,1),lastDay=new Date(year,month,0).getDate(),offset=first.getDay();
+  const todayKey=new Date().toISOString().slice(0,10);
+  const dayCounts={};
+  items.forEach(w=>{
+    if(w.calendarDate.slice(0,7)===key){
+      const day=Number(w.calendarDate.slice(8,10));
+      dayCounts[day]=(dayCounts[day]||0)+1;
+    }else if(w.monthOnly)dayCounts[1]=(dayCounts[1]||0)+1;
+    else{
+      const start=w.start&&w.start.slice(0,7)<key?1:Number((w.start||w.end).slice(8,10));
+      dayCounts[start]=(dayCounts[start]||0)+1;
+    }
+  });
+  let cells="";
+  for(let i=0;i<offset;i++)cells+='<div class="calendar-day outside"></div>';
+  for(let day=1;day<=lastDay;day++){
+    const date=year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+    const count=dayCounts[day]||0;
+    cells+='<div class="calendar-day'+(date===todayKey?' today-day':'')+(count?' has-events':'')+'"><span class="day-number">'+day+'</span>'+(count?'<span class="day-count">'+count+' programação(ões)</span>':'')+'</div>';
+  }
+  const totalCells=offset+lastDay;
+  while(totalCells%7!==0){cells+='<div class="calendar-day outside"></div>';totalCells++;}
+  $("#calendar-grid").innerHTML=cells;
+  $("#calendar-title").textContent=MONTH_NAMES[month-1].charAt(0)+MONTH_NAMES[month-1].slice(1).toLowerCase()+" de "+year;
+  $("#calendar-summary").textContent=items.length+" programação(ões) no período selecionado";
+  $("#calendar-events-count").textContent=items.length+" registro(s) encontrado(s)";
+  $("#calendar-events").innerHTML=items.length?items.map(w=>{
+    const status=STATUS[w.status]||STATUS.novo;
+    const dateLabel=w.monthOnly?"Mês de referência: "+monthLabel(key):(w.start&&w.end&&w.start!==w.end?"De "+new Date(w.start+"T12:00:00").toLocaleDateString("pt-BR")+" até "+new Date(w.end+"T12:00:00").toLocaleDateString("pt-BR"):new Date(w.calendarDate+"T12:00:00").toLocaleDateString("pt-BR"));
+    return '<div class="calendar-event"><div class="event-date">'+escapeHtml(dateLabel)+'</div><b>'+escapeHtml(w.title)+'</b><small>'+escapeHtml(AREA_LABELS[w.area]||w.area)+' · '+escapeHtml(w.owner||"Sem responsável informado")+'</small><span class="badge '+status.className+'">'+status.label+'</span></div>';
+  }).join(""):'<div class="empty-state">Nenhuma programação encontrada para os filtros selecionados.</div>';
+}
+function shiftCalendarMonth(delta){
+  let year=Number($("#calendar-year").value),month=Number($("#calendar-month").value)+delta;
+  if(month<1){month=12;year--;}if(month>12){month=1;year++;}
+  $("#calendar-year").value=String(year);
+  if(![...$("#calendar-year").options].some(o=>o.value===String(year))){
+    const option=document.createElement("option");option.value=String(year);option.textContent=String(year);$("#calendar-year").append(option);
+  }
+  $("#calendar-month").value=String(month).padStart(2,"0");renderCalendar();
+}
+
 function renderHistory(){
   const legacy=sourceData?.legacy2023||[];
   $("#history-count").textContent=works.filter(w=>w.source).length+legacy.reduce((n,x)=>n+x.stages.length,0);
@@ -228,6 +326,9 @@ document.addEventListener("click",event=>{
 });
 $("#work-form").addEventListener("submit",saveWork);
 ["filter-area","filter-year","filter-status","search-work"].forEach(id=>$("#"+id).addEventListener("input",renderSchedules));
+["calendar-year","calendar-month","calendar-area","calendar-future-only"].forEach(id=>$("#"+id).addEventListener("change",renderCalendar));
+$("#calendar-prev").addEventListener("click",()=>shiftCalendarMonth(-1));
+$("#calendar-next").addEventListener("click",()=>shiftCalendarMonth(1));
 $("#export-csv").addEventListener("click",exportCsv);
 $("#restore-file").addEventListener("change",event=>{if(event.target.files[0])restoreBackup(event.target.files[0]);});
 $("#work-modal").addEventListener("click",event=>{if(event.target.classList.contains("modal-backdrop"))closeModal();});
