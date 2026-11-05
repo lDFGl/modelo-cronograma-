@@ -216,7 +216,59 @@ function renderTimeline(){
     return '<section class="timeline-sheet"><div class="timeline-sheet-heading"><div><h3>'+title+'</h3><p>'+subtitle+'</p></div><span class="timeline-sheet-count">'+(workCount+manual.length)+' atividades</span></div><div class="timeline-sheet-scroll"><table class="timeline-table timeline-structured-table '+(isGeneral?"general-sheet":"year-2027-sheet")+'">'+header+'<tbody>'+body+'</tbody></table></div></section>';
   };
   board.innerHTML=sheetKeys.map(renderSheet).join("")||'<div class="empty-box">Nenhum cronograma encontrado.</div>';
+  setupFloatingTimelineScrollbar();
 }
+
+let floatingTimelineBound=false;
+function setupFloatingTimelineScrollbar(){
+  let bar=document.getElementById("timeline-floating-scrollbar");
+  if(!bar){
+    bar=document.createElement("div");
+    bar.id="timeline-floating-scrollbar";
+    bar.className="timeline-floating-scrollbar";
+    bar.setAttribute("aria-label","Rolagem horizontal do cronograma");
+    bar.innerHTML='<div class="timeline-floating-scrollbar-track"></div>';
+    document.body.appendChild(bar);
+  }
+  const track=bar.querySelector(".timeline-floating-scrollbar-track");
+  const sheets=[...document.querySelectorAll(".timeline-sheet-scroll")];
+  const update=()=>{
+    const vh=window.innerHeight||document.documentElement.clientHeight;
+    const candidates=sheets.map(el=>{
+      const rect=el.getBoundingClientRect();
+      const visible=Math.max(0,Math.min(rect.bottom,vh)-Math.max(rect.top,0));
+      return {el,visible,distance:Math.abs((rect.top+rect.bottom)/2-vh*.58)};
+    }).filter(x=>x.visible>80&&x.el.scrollWidth>x.el.clientWidth+2);
+    candidates.sort((a,b)=>b.visible-a.visible||a.distance-b.distance);
+    const active=candidates[0]?.el;
+    if(!active){bar.classList.remove("is-visible");bar._active=null;return;}
+    const rect=active.getBoundingClientRect();
+    const left=Math.max(10,rect.left);
+    const right=Math.min(window.innerWidth-10,rect.right);
+    bar.style.left=left+"px";
+    bar.style.width=Math.max(80,right-left)+"px";
+    track.style.width=active.scrollWidth+"px";
+    if(bar._active!==active)bar.scrollLeft=active.scrollLeft;
+    bar._active=active;
+    bar.classList.add("is-visible");
+  };
+  if(!floatingTimelineBound){
+    floatingTimelineBound=true;
+    window.addEventListener("scroll",update,{passive:true});
+    window.addEventListener("resize",update,{passive:true});
+    bar.addEventListener("scroll",()=>{if(bar._active&&Math.abs(bar._active.scrollLeft-bar.scrollLeft)>1)bar._active.scrollLeft=bar.scrollLeft;},{passive:true});
+  }
+  sheets.forEach(el=>{
+    if(el.dataset.floatingSync==="1")return;
+    el.dataset.floatingSync="1";
+    el.addEventListener("scroll",()=>{
+      if(bar._active===el&&Math.abs(bar.scrollLeft-el.scrollLeft)>1)bar.scrollLeft=el.scrollLeft;
+      update();
+    },{passive:true});
+  });
+  requestAnimationFrame(update);
+}
+
 function renderAll(){renderDashboard();renderTimeline();renderSchedules();}
 function renderDashboard(){
   const total=works.length;
