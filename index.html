@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#135c6c">
+  <meta name="description" content="Gestão executiva de cronogramas e entregáveis da FG.">
+  <title>Cronogramas FG | Gestão Executiva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">FG</div><div><strong>FG EMPREENDIMENTOS</strong><span>GESTÃO DE CRONOGRAMAS</span></div></div>
+      <div class="side-label">GESTÃO</div>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <button class="nav-link active" data-view="dashboard"><span>▦</span> Painel executivo</button>
+        <button class="nav-link" data-view="schedules"><span>▤</span> Cronogramas por área</button>
+        <button class="nav-link" data-view="history"><span>◷</span> Histórico importado</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="local-note"><span class="status-dot"></span><div><b>Armazenamento local</b><small>Dados neste navegador</small></div></div>
+        <button class="nav-link" data-action="backup"><span>⇩</span> Backup / restauração</button>
+        <button class="nav-link" data-action="about"><span>ⓘ</span> Sobre o sistema</button>
+      </div>
+      <div class="side-foot">FASE 1 · VERSÃO 1.0</div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><div class="eyebrow">FG EMPREENDIMENTOS <span>/</span> AUDITORIA E GOVERNANÇA</div><h1 id="page-title">Painel executivo</h1><p id="page-subtitle">Visão consolidada dos trabalhos, prazos e entregáveis.</p></div><div class="top-actions"><span class="today" id="today-label"></span><button class="btn btn-primary" id="new-work">＋ Novo trabalho</button></div></header>
+      <section id="dashboard-view" class="view active">
+        <div class="kpi-grid" id="kpi-grid"></div>
+        <div class="dashboard-grid">
+          <article class="panel area-panel"><div class="panel-head"><div><h2>Carteira por área</h2><p>Distribuição dos trabalhos cadastrados</p></div><span class="panel-tag">CONSOLIDADO</span></div><div id="area-breakdown" class="area-breakdown"></div></article>
+          <article class="panel status-panel"><div class="panel-head"><div><h2>Situação dos trabalhos</h2><p>Classificação conforme status atual</p></div></div><div id="status-breakdown" class="status-breakdown"></div></article>
+          <article class="panel upcoming-panel"><div class="panel-head"><div><h2>Próximos marcos</h2><p>Trabalhos planejados nos próximos meses</p></div><button class="text-btn" data-view="schedules">Ver cronogramas →</button></div><div id="upcoming-list"></div></article>
+          <article class="panel attention-panel"><div class="panel-head"><div><h2>Acompanhamento prioritário</h2><p>Itens em andamento ou replanejados</p></div></div><div id="attention-list"></div></article>
+        </div>
+        <div class="panel note-panel"><div class="note-icon">i</div><div><b>Critério de leitura dos dados históricos</b><p>As marcações da planilha foram preservadas: ✔ concluído, A em andamento, P em planejamento, R replanejado e D demanda da alta gestão. A marcação “-” foi mantida como registro histórico. O sistema não presume datas exatas quando a planilha informa somente o mês.</p></div></div>
+      </section>
+      <section id="schedules-view" class="view">
+        <div class="panel filter-panel"><div class="filter-row"><label class="filter-field"><span>Área</span><select id="filter-area"><option value="">Todas as áreas</option></select></label><label class="filter-field"><span>Ano</span><select id="filter-year"><option value="">Todos os anos</option><option>2023</option><option>2025</option><option>2026</option><option>2027</option></select></label><label class="filter-field"><span>Status</span><select id="filter-status"><option value="">Todos</option><option value="planejamento">Em planejamento</option><option value="andamento">Em andamento</option><option value="concluido">Concluído</option><option value="replanejado">Replanejado</option><option value="demanda">Demanda da alta gestão</option><option value="novo">Novo / não iniciado</option></select></label><label class="filter-field search-field"><span>Buscar trabalho</span><input id="search-work" type="search" placeholder="Nome, código ou tipo..."></label></div></div>
+        <div class="schedule-heading"><div><h2 id="schedule-area-title">Todos os trabalhos</h2><p id="schedule-count"></p></div><div class="schedule-actions"><button class="btn btn-outline" id="export-csv">Exportar CSV</button><button class="btn btn-primary" id="new-work-2">＋ Adicionar trabalho</button></div></div>
+        <div id="schedule-list" class="schedule-list"></div>
+      </section>
+      <section id="history-view" class="view">
+        <div class="panel history-intro"><div><span class="panel-tag">FONTE ORIGINAL</span><h2>Histórico preservado da planilha</h2><p>Os cronogramas de 2023, 2025, 2026 e 2027 foram importados como referência inicial. Os registros históricos permanecem consultáveis e podem ser editados sem alterar o arquivo de origem.</p></div><div class="history-count"><strong id="history-count">—</strong><span>registros históricos</span></div></div>
+        <div class="panel"><div class="panel-head"><div><h2>Registros legados</h2><p>Estrutura e etapas de Compliance, Governança e Gerenciamento de Riscos</p></div></div><div id="legacy-list" class="legacy-list"></div></div>
+        <div class="panel source-panel"><b>Arquivo-fonte:</b> Cronograma_FG_Empreendimentos_2025-2027.xlsx <span>Os valores originais foram interpretados sem converter marcações ambíguas em datas ou resultados.</span></div>
+      </section>
+      <footer class="footer"><span>FG EMPREENDIMENTOS · SISTEMA EXECUTIVO DE CRONOGRAMAS</span><span>Fase 1 · Aplicação local</span></footer>
+    </main>
+  </div>
+  <div id="work-modal" class="modal" aria-hidden="true"><div class="modal-backdrop" data-close="modal"></div><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-head"><div><span class="eyebrow">CADASTRO DE ENTREGÁVEIS</span><h2 id="modal-title">Novo trabalho</h2></div><button class="icon-btn" data-close="modal" aria-label="Fechar">×</button></div><form id="work-form"><input type="hidden" id="work-id"><div class="form-grid"><label class="form-field span-2"><span>Nome do trabalho *</span><input id="work-name" required maxlength="240" placeholder="Ex.: Auditoria de processos de compras"></label><label class="form-field"><span>Área *</span><select id="work-area" required><option value="ADM">Administrativo / Central</option><option value="Obras">Operacional / Obras</option><option value="Demandas">Demandas da Alta Administração</option><option value="Gerenciamento de Riscos">Gerenciamento de Riscos</option><option value="Governança">Governança</option><option value="Compliance">Compliance</option></select></label><label class="form-field"><span>Tipo de trabalho</span><select id="work-type"><option>Novo escopo</option><option>Reavaliação 1</option><option>Reavaliação 2</option><option>Recorrente mensal</option><option>Recorrente bimestral</option><option>Recorrente semestral</option><option>Recorrente anual</option><option>Gestão – semestral</option><option>Sob demanda</option><option>Outro</option></select></label><label class="form-field"><span>Status</span><select id="work-status"><option value="novo">Novo / não iniciado</option><option value="planejamento">Em planejamento</option><option value="andamento">Em andamento</option><option value="concluido">Concluído</option><option value="replanejado">Replanejado</option><option value="demanda">Demanda da alta gestão</option></select></label><label class="form-field"><span>Prioridade</span><select id="work-priority"><option value="media">Média</option><option value="alta">Alta</option><option value="baixa">Baixa</option></select></label><label class="form-field"><span>Início previsto</span><input id="work-start" type="date"></label><label class="form-field"><span>Término previsto</span><input id="work-end" type="date"></label><label class="form-field"><span>Responsável</span><input id="work-owner" maxlength="100" placeholder="Responsável pelo trabalho"></label><label class="form-field"><span>Código / referência</span><input id="work-code" maxlength="40" placeholder="AI-001/2027"></label><label class="form-field span-2"><span>Observações</span><textarea id="work-notes" rows="3" maxlength="1200" placeholder="Escopo, premissas, dependências ou observações..."></textarea></label></div><div class="form-actions"><button type="button" class="btn btn-ghost" data-close="modal">Cancelar</button><button type="submit" class="btn btn-primary">Salvar trabalho</button></div></form></div></div>
+  <div id="toast" class="toast" role="status"></div>
+  <input id="restore-file" type="file" accept="application/json,.json" hidden>
+  <script src="assets/js/app.js"></script>
+</body></html>
