@@ -171,7 +171,7 @@ function renderTimeline(){
     }).join("");
     return '<section class="timeline-year-section"><div class="timeline-year-heading">'+year+'<span>'+rows.length+' serviços programados</span></div>'+yearGroups+'</section>';
   }).join("");
-  const unplanned=works.filter(w=>!Object.keys(w.months||{}).length&&(timelineYear==="all"||String(w.year||"")===timelineYear)).sort(prioritySort);
+  const unplanned=works.filter(w=>!Object.keys(w.months||{}).length&&(timelineYear==="all"||w.source===timelineYear)).sort(prioritySort);
   const unplannedHtml=unplanned.length?'<section class="timeline-group"><div class="timeline-group-title">SEM PROGRAMAÇÃO MENSAL<span class="group-count">'+unplanned.length+' trabalho(s)</span></div><div class="timeline-unplanned-list">'+unplanned.map(w=>'<div class="timeline-unplanned-row"><div><b>'+escapeHtml(w.title)+'</b><small>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</small></div><button type="button" class="btn btn-outline" data-edit="'+escapeHtml(w.id)+'">Editar</button></div>').join("")+'</div></section>':"";
   board.innerHTML=(sections||"")+(unplannedHtml||"")||'<section class="timeline-group"><div class="timeline-empty">Nenhum serviço encontrado para o filtro selecionado.</div></section>';
 }
