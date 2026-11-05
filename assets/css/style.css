@@ -155,3 +155,8 @@ body{font-size:15px}
  .timeline-work-name{font-size:12px}
  .timeline-mark{width:31px;height:30px;font-size:12px}
 }
+
+.timeline-work-title-row{display:flex;align-items:flex-start;gap:7px;justify-content:space-between}
+.timeline-work-title-row .timeline-work-name{flex:1}
+.timeline-reschedule{flex:0 0 27px;width:27px;height:25px;border:1px solid #c6dce0;border-radius:5px;background:#e7f2f4;color:#135c6c;font:700 16px "DM Sans";cursor:pointer;opacity:.82}
+.timeline-reschedule:hover{background:#cfe5e9;border-color:#8eb9c0;opacity:1;transform:translateY(-1px)}
