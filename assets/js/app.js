@@ -229,7 +229,7 @@ function calendarMonthWorks(){
   }).map(w=>{
     const exact=!!(w.start||w.end);
     return {...w,calendarDate:w.start||w.end||key+"-01",monthOnly:!exact};
-  }).sort((a,b)=>a.calendarDate.localeCompare(b.calendarDate)||a.title.localeCompare(b.title,"pt-BR"));
+  }).sort(prioritySort);
 }
 function endOfWork(w){
   const value=w.end||w.start;
