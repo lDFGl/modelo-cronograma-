@@ -13,6 +13,7 @@ const MONTH_NAMES = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT"
 let sourceData = null;
 let works = [];
 let currentView = "dashboard";
+let currentWorkFilter = "all";
 let toastTimer;
 
 const $ = (selector) => document.querySelector(selector);
@@ -145,15 +146,23 @@ function renderDashboard(){
   $("#attention-list").innerHTML=attention.length?attention.map(w=>'<div class="work-mini"><div class="date-chip">'+(w.status==="andamento"?"AND":w.status==="replanejado"?"REP":"DEM")+'</div><div><b>'+escapeHtml(w.title)+'</b><small>'+escapeHtml(AREA_LABELS[w.area]||w.area)+' · '+STATUS[w.status].label+'</small></div></div>').join(""):'<div class="empty-state">Nenhum item classificado como em andamento, replanejado ou demanda.</div>';
 }
 function renderSchedules(){
-  const list=filteredWorks();
+  const all=filteredWorks();
+  const list=currentWorkFilter==="done"?all.filter(w=>w.status==="concluido"):currentWorkFilter==="active"?all.filter(w=>w.status==="andamento"):currentWorkFilter==="future"?all.filter(w=>["novo","planejamento","replanejado","demanda"].includes(w.status)):all;
+  document.querySelectorAll("[data-work-filter]").forEach(btn=>btn.classList.toggle("active",btn.dataset.workFilter===currentWorkFilter));
+  const done=all.filter(w=>w.status==="concluido").length,active=all.filter(w=>w.status==="andamento").length,future=all.filter(w=>["novo","planejamento","replanejado","demanda"].includes(w.status)).length;
+  $("#work-overview-count").textContent=all.length+" serviços · "+done+" realizados · "+active+" em andamento · "+future+" a realizar";
   const area=$("#filter-area").value;
   $("#schedule-area-title").textContent=area?(AREA_LABELS[area]||area):"Todos os trabalhos";
-  $("#schedule-count").textContent=list.length+" registro(s) exibido(s)";
+  $("#schedule-count").textContent=list.length+" serviço(s) exibido(s)";
   $("#schedule-list").innerHTML=list.length?list.map(w=>{
-    const months=sortedMonths(w.months).map(m=>'<span class="month-pill">'+monthLabel(m)+' · '+escapeHtml(w.months[m])+'</span>').join("");
-    const status=STATUS[w.status]||STATUS.novo;
-    return '<article class="schedule-card"><div><h3>'+escapeHtml(w.title)+'</h3><div class="schedule-meta"><span>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</span>'+(w.code?'<span>'+escapeHtml(w.code)+'</span>':'')+(w.type?'<span>'+escapeHtml(w.type)+'</span>':'')+(w.owner?'<span>Responsável: '+escapeHtml(w.owner)+'</span>':'')+'</div>'+(months?'<div class="month-pills">'+months+'</div>':'')+'</div><div class="schedule-right"><span class="badge '+status.className+'">'+status.label+'</span><div class="card-actions"><button class="icon-btn" data-edit="'+escapeHtml(w.id)+'" title="Editar">✎</button><button class="icon-btn" data-delete="'+escapeHtml(w.id)+'" title="Excluir">×</button></div></div></article>';
-  }).join(""):'<div class="empty-box"><b>Nenhum trabalho encontrado</b>Ajuste os filtros ou cadastre um novo trabalho.</div>';
+    const months=sortedMonths(w.months).map(m=>{
+      const mark=w.months[m],label=mark==="✔"?"Realizado":mark==="A"?"Em andamento":mark==="R"?"Replanejado":mark==="D"?"Demanda":mark==="P"?"Planejado":"Sem atividade";
+      const cls=mark==="✔"?"done":mark==="A"?"active":mark==="R"?"rescheduled":mark==="D"?"demand":mark==="P"?"planned":"neutral";
+      return '<span class="timeline-chip '+cls+'" title="'+escapeHtml(label)+'">'+monthLabel(m)+' <b>'+escapeHtml(mark)+'</b></span>';
+    }).join("");
+    const status=STATUS[w.status]||STATUS.novo,meta=[w.code,w.type,w.owner?"Resp.: "+w.owner:""].filter(Boolean).join(" · ");
+    return '<tr><td class="work-title-cell"><strong>'+escapeHtml(w.title)+'</strong><small>'+escapeHtml(meta||"Sem código ou responsável informado")+'</small></td><td>'+escapeHtml(AREA_LABELS[w.area]||w.area)+'</td><td><div class="timeline-chips">'+(months||'<span class="no-dates">Sem programação mensal informada</span>')+'</div></td><td><span class="badge '+status.className+'">'+status.label+'</span></td><td><div class="card-actions"><button class="icon-btn" data-edit="'+escapeHtml(w.id)+'" title="Editar" aria-label="Editar">✎</button><button class="icon-btn" data-delete="'+escapeHtml(w.id)+'" title="Excluir" aria-label="Excluir">×</button></div></td></tr>';
+  }).join(""):'<tr><td colspan="5"><div class="empty-box"><b>Nenhum serviço encontrado</b>Ajuste os filtros ou cadastre um novo trabalho.</div></td></tr>';
 }
 
 function populateCalendarFilters(){
