@@ -14,6 +14,7 @@ let sourceData = null;
 let works = [];
 let currentView = "dashboard";
 let currentWorkFilter = "all";
+let timelineYear = String(new Date().getFullYear());
 let toastTimer;
 
 const $ = (selector) => document.querySelector(selector);
@@ -108,6 +109,7 @@ function setView(view){
   document.querySelectorAll(".nav-link[data-view]").forEach(el=>el.classList.toggle("active",el.dataset.view===view));
   const titles={dashboard:["Painel executivo","Visão consolidada dos trabalhos, prazos e entregáveis."],schedules:["Cronogramas por área","Consulte, crie e atualize os trabalhos e suas programações."],calendar:["Calendário de programações","Visualize compromissos futuros por mês, ano e área."],history:["Histórico importado","Consulta das estruturas e etapas legadas da planilha de origem."]};
   $("#page-title").textContent=titles[view][0]; $("#page-subtitle").textContent=titles[view][1];
+  if(view==="dashboard") renderTimeline();
   if(view==="schedules") renderSchedules();
   if(view==="calendar") renderCalendar();
 }
@@ -124,7 +126,27 @@ function filteredWorks(){
     return matchesArea&&matchesYear&&matchesStatus&&(!f.search||haystack.includes(f.search));
   }).sort((a,b)=>a.title.localeCompare(b.title,"pt-BR"));
 }
-function renderAll(){renderDashboard();renderSchedules();renderHistory();if(currentView==="calendar")renderCalendar();}
+
+function workCategory(w){
+  const code=(w.code||((w.title.match(/\b(?:AR|AD)-?\d{3}[_/-]?\d{4}\b/i)||[])[0])||"").toUpperCase();
+  if(/^AR-|^AD-/.test(code)||w.area==="Demandas"||/Demandas da Alta Administração/i.test(w.title))return "alta";
+  if(/^AI-/.test(code)||/auditoria/i.test(w.title))return "ai";
+  if(/^Follow-up/i.test(w.title))return "follow";
+  return "other";
+}
+function categoryLabel(category){return category==="alta"?"ANÁLISES DA ALTA DIREÇÃO (AR / AD)":category==="ai"?"AUDITORIAS INTERNAS (AI)":category==="follow"?"FOLLOW-UPS E PLANOS DE AÇÃO":"DEMAIS ATIVIDADES";}
+function prioritySort(a,b){const order={alta:0,ai:1,follow:2,other:3};return order[workCategory(a)]-order[workCategory(b)]||a.title.localeCompare(b.title,"pt-BR");}
+function renderTimeline(){
+  const year=timelineYear,groups=["alta","ai","follow","other"],months=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+  const rows=works.filter(w=>Object.keys(w.months||{}).some(m=>m.startsWith(year))).sort(prioritySort),board=$("#timeline-board");
+  if(!board)return;
+  board.innerHTML=groups.map(group=>{
+    const items=rows.filter(w=>workCategory(w)===group);if(!items.length)return "";
+    return '<section class="timeline-group"><div class="timeline-group-title '+(group==="alta"?"priority-high":group==="ai"?"priority-ai":group==="follow"?"priority-follow":"")+'">'+categoryLabel(group)+'<span class="group-count">'+items.length+' trabalho(s)</span></div><table class="timeline-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map(m=>'<th>'+m+'</th>').join("")+'</tr></thead><tbody>'+items.map(w=>'<tr><td><div class="timeline-work-name">'+escapeHtml(w.title)+'</div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[w.area]||w.area)+(w.owner?" · "+escapeHtml(w.owner):"")+'</div></td>'+months.map((m,i)=>{const mark=(w.months||{})[year+"-"+String(i+1).padStart(2,"0")];const cls=mark==="✔"?"done":mark||"";return '<td>'+(mark?'<span class="timeline-mark '+cls+'">'+escapeHtml(mark)+'</span>':'<span class="timeline-empty">·</span>')+'</td>';}).join("")+'</tr>').join("")+'</tbody></table></section>';
+  }).join("")||'<div class="empty-state">Não há programações mensais registradas para '+year+'.</div>';
+}
+
+function renderAll(){renderDashboard();renderTimeline();renderSchedules();renderHistory();if(currentView==="calendar")renderCalendar();}
 function renderDashboard(){
   const total=works.length;
   const count=s=>works.filter(w=>w.status===s).length;
@@ -343,6 +365,7 @@ document.addEventListener("click",event=>{
 $("#work-form").addEventListener("submit",saveWork);
 ["filter-area","filter-year","filter-status","search-work"].forEach(id=>$("#"+id).addEventListener("input",renderSchedules));
 ["calendar-year","calendar-month","calendar-area","calendar-future-only"].forEach(id=>$("#"+id).addEventListener("change",renderCalendar));
+$("#timeline-year")?.addEventListener("change",event=>{timelineYear=event.target.value;renderTimeline();});
 $("#calendar-prev").addEventListener("click",()=>shiftCalendarMonth(-1));
 $("#calendar-next").addEventListener("click",()=>shiftCalendarMonth(1));
 $("#export-csv").addEventListener("click",exportCsv);
