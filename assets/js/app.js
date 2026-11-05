@@ -182,7 +182,7 @@ function renderTimeline(){
   board.innerHTML=visibleYears.map(year=>{
     const rows=structure[year]||[];
     const workCount=rows.filter(row=>row[0]==="work").length;
-    const body=rows.map(entry=>{
+    let body=rows.map(entry=>{
       const [kind,title,area,section,order,sourceId]=entry;
       if(kind==="section"){
         const priority=section==="4"?" priority-high":"";
@@ -199,6 +199,17 @@ function renderTimeline(){
       }).join("");
       return '<tr class="timeline-work-row"><td><div class="timeline-work-title-row"><div class="timeline-work-name" '+(work?'role="button" tabindex="0" data-timeline-edit="'+escapeHtml(work.id)+'"':'')+'>'+escapeHtml(shownTitle)+'</div>'+(work?'<button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(work.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button>':"")+'</div><div class="timeline-work-meta">'+escapeHtml(meta)+'</div></td>'+cells+'</tr>';
     }).join("");
+    const manualForYear=works.filter(item=>!item.lockedSource&&Object.keys(item.months||{}).some(key=>key.startsWith(year))).sort(prioritySort);
+    if(manualForYear.length){
+      body+='<tr class="timeline-section-row"><td colspan="13">TRABALHOS ADICIONADOS NO PAINEL</td></tr>';
+      body+=manualForYear.map(work=>{
+        const cells=months.map((month,index)=>{
+          const key=year+"-"+String(index+1).padStart(2,"0"),mark=work.months?.[key]||"",cls=mark==="✔"?"done":mark==="-"?"none":mark||"";
+          return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" data-timeline-cell="'+escapeHtml(work.id)+'" data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';
+        }).join("");
+        return '<tr class="timeline-work-row"><td><div class="timeline-work-title-row"><div class="timeline-work-name" role="button" tabindex="0" data-timeline-edit="'+escapeHtml(work.id)+'">'+escapeHtml(work.title)+'</div><button type="button" class="timeline-reschedule" data-reschedule="'+escapeHtml(work.id)+'" title="Reagendar este trabalho" aria-label="Reagendar este trabalho">↪</button></div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[work.area]||work.area)+'</div></td>'+cells+'</tr>';
+      }).join("");
+    }
     return '<section class="timeline-year-section"><div class="timeline-year-heading">'+year+'<span>'+workCount+' trabalhos · estrutura original da planilha</span></div><table class="timeline-table timeline-structured-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map((month,index)=>'<th><span>'+month+'</span><button type="button" class="month-add" data-new-month="'+year+'-'+String(index+1).padStart(2,"0")+'" title="Adicionar trabalho em '+month+'">＋</button></th>').join("")+'</tr></thead><tbody>'+body+'</tbody></table></section>';
   }).join("")||'<section class="timeline-group"><div class="timeline-empty">Nenhum trabalho encontrado para o filtro selecionado.</div></section>';
 }
