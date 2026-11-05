@@ -43,7 +43,7 @@ function buildInitialData(data){
       id:"legacy-2527-"+index,title,area,type:"",
       status:latestMarkStatus(months),priority:"media",months:months||{},
       owner:"",code:(title.match(/\\b(?:AI|AR|AD)-?\\d{3}[_/-]?\\d{4}\\b/i)||[])[0]||"",
-      notes:"",source:"2025-2026",lockedSource:true
+      notes:"",source:"2025/2026",lockedSource:true
     });
   });
   (data.schedule2027||[]).forEach((row,index)=>{
@@ -60,7 +60,7 @@ function buildInitialData(data){
 }
 async function initialize(){
   try{
-    const response = await fetch("data/historico.json?v=20261105-5",{cache:"no-store"});
+    const response = await fetch("data/historico.json?v=20261105-7",{cache:"no-store"});
     if(!response.ok) throw new Error("Não foi possível carregar o histórico.");
     sourceData = await response.json();
   }catch(error){
@@ -160,14 +160,13 @@ function renderTimeline(){
   const board=$("#timeline-board");
   if(!board)return;
   const structure=sourceData?.timelineStructure||{};
-  const sheetKeys=timelineYear==="all"?["2025-2026","2027"]:[timelineYear];
+  const sheetKeys=timelineYear==="all"?["2025","2026","2027"]:[timelineYear];
   const findWork=entry=>{
     const id=entry[5];
     return id ? works.find(item=>item.id===id) : null;
   };
-  const monthKeysGeneral=[];
-  [2025,2026,2027].forEach(year=>MONTH_NAMES.forEach((_,index)=>monthKeysGeneral.push(year+"-"+String(index+1).padStart(2,"0"))));
-  const monthKeys2027=MONTH_NAMES.map((_,index)=>"2027-"+String(index+1).padStart(2,"0"));
+  const monthKeysForYear=year=>MONTH_NAMES.map((_,index)=>year+"-"+String(index+1).padStart(2,"0"));
+  const monthKeys2027=monthKeysForYear("2027");
   const monthHeader=key=>{
     const month=Number(key.slice(5))-1;
     return '<th class="month-head"><span>'+MONTH_NAMES[month]+'</span><button type="button" class="month-add" data-new-month="'+key+'" title="Adicionar trabalho em '+MONTH_NAMES[month]+'/'+key.slice(0,4)+'">＋</button></th>';
@@ -192,17 +191,17 @@ function renderTimeline(){
   const renderSheet=key=>{
     const rows=structure[key]||[];
     if(!rows.length)return "";
-    const isGeneral=key==="2025-2026";
-    const keys=isGeneral?monthKeysGeneral:monthKeys2027;
+    const isGeneral=key!=="2027";
+    const keys=isGeneral?monthKeysForYear(key):monthKeys2027;
     const workCount=rows.filter(row=>row[0]==="work").length;
     let header;
     if(isGeneral){
-      header='<thead><tr><th class="title-head" rowspan="2">TRABALHO / ÁREA</th>'+[2025,2026,2027].map(y=>'<th class="year-head" colspan="12">'+y+'</th>').join("")+'</tr><tr>'+keys.map(monthHeader).join("")+'</tr></thead>';
+      header='<thead><tr><th class="title-head" rowspan="2">TRABALHO / ÁREA</th><th class="year-head" colspan="12">'+key+'</th></tr><tr>'+keys.map(monthHeader).join("")+'</tr></thead>';
     }else{
       header='<thead><tr><th class="title-head" rowspan="2">TRABALHO / ÁREA</th><th class="type-head" rowspan="2">TIPO DE TRABALHO</th><th class="year-head" colspan="12">2027</th></tr><tr>'+keys.map(monthHeader).join("")+'</tr></thead>';
     }
     let body=rows.map(row=>workRow(row,keys,!isGeneral)).join("");
-    const manualYears=isGeneral?["2025","2026"]:["2027"];
+    const manualYears=[key];
     const manual=works.filter(item=>!item.lockedSource&&Object.keys(item.months||{}).some(m=>manualYears.some(y=>m.startsWith(y))));
     if(manual.length){
       body+='<tr class="timeline-section-row"><td colspan="'+(keys.length+(isGeneral?1:2))+'"><span class="timeline-section-number">+</span>TRABALHOS ADICIONADOS NO PAINEL</td></tr>';
@@ -211,8 +210,8 @@ function renderTimeline(){
         return workRow(pseudo,keys,!isGeneral);
       }).join("");
     }
-    const title=isGeneral?"CRONOGRAMA GERAL FG 2025–2026":"CRONOGRAMA FG 2027";
-    const subtitle=isGeneral?"40 atividades · 36 meses (2025, 2026 e 2027) · ordem da planilha original":"26 atividades · 12 meses · tipo de trabalho conforme a planilha";
+    const title=isGeneral?"CRONOGRAMA GERAL FG "+key:"CRONOGRAMA FG 2027";
+    const subtitle=isGeneral?"40 atividades · 12 meses · ordem da planilha original":"26 atividades · 12 meses · tipo de trabalho conforme a planilha";
     return '<section class="timeline-sheet"><div class="timeline-sheet-heading"><div><h3>'+title+'</h3><p>'+subtitle+'</p></div><span class="timeline-sheet-count">'+(workCount+manual.length)+' atividades</span></div><div class="timeline-sheet-scroll"><table class="timeline-table timeline-structured-table '+(isGeneral?"general-sheet":"year-2027-sheet")+'">'+header+'<tbody>'+body+'</tbody></table></div></section>';
   };
   board.innerHTML=sheetKeys.map(renderSheet).join("")||'<div class="empty-box">Nenhum cronograma encontrado.</div>';
