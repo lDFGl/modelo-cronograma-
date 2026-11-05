@@ -330,6 +330,7 @@ function exportCsv(){
   downloadFile("cronogramas-fg.csv",csv,"text/csv;charset=utf-8");showToast("CSV exportado.");
 }
 document.addEventListener("click",event=>{
+  const workFilter=event.target.closest("[data-work-filter]");if(workFilter){currentWorkFilter=workFilter.dataset.workFilter;renderSchedules();return;}
   const view=event.target.closest("[data-view]");if(view){setView(view.dataset.view);return;}
   if(event.target.closest("#new-work")||event.target.closest("#new-work-2")){openModal();return;}
   const edit=event.target.closest("[data-edit]");if(edit){openModal(works.find(w=>w.id===edit.dataset.edit));return;}
