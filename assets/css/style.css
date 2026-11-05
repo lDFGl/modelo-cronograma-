@@ -116,3 +116,42 @@
 .timeline-mark.none{background:#eef1f2;color:#687a80}
 .timeline-mark:focus-visible,.interactive-legend button:focus-visible{outline:2px solid #135c6c;outline-offset:2px}
 @media(max-width:760px){.interactive-legend button{padding:7px 8px;font-size:10px}.legend-instruction{font-size:11px}}
+
+
+/* Ajustes de legibilidade e destaque das legendas do painel executivo */
+body{font-size:15px}
+.roadmap-panel{background:#f1f6f7;border-color:#cbdde1}
+.roadmap-head h2{font-size:24px}
+.roadmap-head p{font-size:14px}
+.legend-instruction{font-size:14px;font-weight:600;color:#294b55;margin:4px 0 12px}
+.roadmap-legend.interactive-legend{background:#163d4a;border:1px solid #0e303a;border-radius:10px;padding:15px 17px;margin-bottom:14px;gap:12px;box-shadow:0 5px 14px rgba(16,47,58,.14)}
+.interactive-legend button{font-size:13px;font-weight:700;padding:10px 14px;border:1px solid rgba(255,255,255,.22)}
+.interactive-legend button i{font-size:14px;min-width:27px;height:27px}
+.interactive-legend button.selected{outline:3px solid #f3c969;outline-offset:2px;box-shadow:0 0 0 5px rgba(243,201,105,.22);transform:translateY(-1px)}
+.interactive-legend .mark-p{background:#ffe8b8;color:#704b08}.interactive-legend .mark-p i{background:#f8d68f}
+.interactive-legend .mark-a{background:#d9eafa;color:#174d77}.interactive-legend .mark-a i{background:#b9d8f2}
+.interactive-legend .mark-r{background:#f8d9d6;color:#812d29}.interactive-legend .mark-r i{background:#efb9b4}
+.interactive-legend .mark-d{background:#e7def4;color:#543b78}.interactive-legend .mark-d i{background:#d1c1e9}
+.interactive-legend .mark-done{background:#d5efdf;color:#145b37}.interactive-legend .mark-done i{background:#b5dfc5}
+.interactive-legend .mark-none{background:#e1e7e9;color:#344b52}.interactive-legend .mark-none i{background:#cbd6da}
+.timeline-table th{font-size:12px;color:#526b73;padding:15px 7px}
+.timeline-table th:first-child{font-size:12px}
+.timeline-table td{height:68px}
+.timeline-work-name{font-size:14px;line-height:1.5}
+.timeline-work-meta{font-size:11px}
+.timeline-mark{width:38px;height:36px;font-size:14px}
+.timeline-mark.empty{opacity:.82;background:#e5edef;color:#617780}
+.work-table th{font-size:11px}
+.work-table td{font-size:12px}
+.work-title-cell strong{font-size:12px}
+.work-title-cell small{font-size:10px}
+.timeline-chip,.timeline-chip b{font-size:11px}
+.icon-btn[data-reschedule]{background:#e5f1f3;color:#135c6c;font-size:18px}
+.icon-btn[data-reschedule]:hover{background:#cce4e8;color:#0d4652}
+@media(max-width:760px){
+ .roadmap-legend.interactive-legend{padding:12px;gap:9px}
+ .interactive-legend button{font-size:11px;padding:8px 9px}
+ .interactive-legend button i{min-width:23px;height:23px}
+ .timeline-work-name{font-size:12px}
+ .timeline-mark{width:31px;height:30px;font-size:12px}
+}
