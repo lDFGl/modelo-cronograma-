@@ -1,0 +1,593 @@
+{
+  "source": "Cronograma_FG_Empreendimentos_2025-2027.xlsx",
+  "importedAt": "2026-11-05",
+  "legend": {
+    "P": "Em planejamento",
+    "A": "Em andamento",
+    "R": "Replanejada",
+    "D": "Demanda da alta gestão",
+    "✔": "Concluído",
+    "-": "Marcação histórica sem atividade prevista"
+  },
+  "legacy2023": [
+    {
+      "area": "Compliance",
+      "unit": "UC 05 - Compliance",
+      "year": 2023,
+      "stages": [
+        "Reunião de abertura",
+        "Mobilização da equipe",
+        "Planejamento",
+        "Execução",
+        "Minuta",
+        "Alinhamento de resultados",
+        "Apresentação dos trabalhos",
+        "Relatório final"
+      ],
+      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
+    },
+    {
+      "area": "Governança",
+      "unit": "UC 06 - Governança",
+      "year": 2023,
+      "stages": [
+        "Reunião de abertura",
+        "Mobilização da equipe",
+        "Planejamento",
+        "Execução",
+        "Minuta",
+        "Alinhamento de resultados",
+        "Apresentação dos trabalhos",
+        "Relatório final"
+      ],
+      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
+    },
+    {
+      "area": "Gerenciamento de Riscos",
+      "unit": "UC 07 - Gerenciamento de Riscos e Controles Internos",
+      "year": 2023,
+      "stages": [
+        "Reunião de abertura",
+        "Mobilização da equipe",
+        "Planejamento",
+        "Execução",
+        "Minuta",
+        "Alinhamento de resultados",
+        "Apresentação dos trabalhos",
+        "Relatório final"
+      ],
+      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
+    }
+  ],
+  "schedule2025_2027": [
+    [
+      "1. Planejamento dos Trabalhos de AI",
+      "Governança",
+      {
+        "2025-01": "-",
+        "2025-02": "-",
+        "2025-03": "-",
+        "2025-04": "-",
+        "2025-05": "-",
+        "2025-06": "✔",
+        "2025-07": "✔",
+        "2026-01": "✔",
+        "2026-07": "P",
+        "2027-01": "P",
+        "2027-07": "P"
+      }
+    ],
+    [
+      "2.1 - Auditoria dos processos de compras da Assistência Técnica (AI-001_2025)",
+      "ADM",
+      {
+        "2025-06": "✔",
+        "2025-07": "✔"
+      }
+    ],
+    [
+      "2.2 - Auditoria dos processos de compras de Suprimentos para a Assistência Técnica (AI-002_2025)",
+      "ADM",
+      {
+        "2025-07": "✔"
+      }
+    ],
+    [
+      "2.3 - Auditoria dos processos de compras de Áreas Comuns e Paisagismo para o SUP (AI-003_2025)",
+      "ADM",
+      {
+        "2025-07": "✔"
+      }
+    ],
+    [
+      "2.4 - Auditoria dos processos de compras do Marketing (AI-004_2025)",
+      "ADM",
+      {
+        "2025-08": "✔"
+      }
+    ],
+    [
+      "2.5 - Auditoria dos processos de Homologação Fornecedores/Contratos (AI-005_2025)",
+      "ADM",
+      {
+        "2025-09": "✔"
+      }
+    ],
+    [
+      "2.6 - Auditoria dos processos de pagamentos das Comissões nas Vendas Efetivadas (AI-006_2025)",
+      "ADM",
+      {
+        "2025-10": "✔"
+      }
+    ],
+    [
+      "2.7 - Auditoria dos processos de Contratação, Folha, Clima Org. e Controle internos do DHO (AI-009_2026)",
+      "ADM",
+      {
+        "2026-04": "✔"
+      }
+    ],
+    [
+      "2.8 - Auditoria dos processos do Financeiro/Contas a pagar (AI-015_2026)",
+      "ADM",
+      {
+        "2026-05": "R",
+        "2026-10": "✔"
+      }
+    ],
+    [
+      "2.9 - Auditoria dos processos do Financeiro/Contas a receber (AI-014_2026)",
+      "ADM",
+      {
+        "2026-09": "✔"
+      }
+    ],
+    [
+      "2.10 - Auditoria dos processos de Controle Patrimonial - Depósitos Patrimônio e MKT (AI-016_2026)",
+      "ADM",
+      {
+        "2026-09": "✔"
+      }
+    ],
+    [
+      "2.11 - Auditoria dos controles internos APROBRAVA (AI-011_2026)",
+      "ADM",
+      {
+        "2026-07": "✔"
+      }
+    ],
+    [
+      "2.12 - Auditoria dos processos de compras da Assistência Técnica (AI-012_2026) - Ciclo 1",
+      "ADM",
+      {
+        "2026-09": "✔"
+      }
+    ],
+    [
+      "2.13 - Auditoria dos processos referente aos contratos de Permuta Terreno/Fornecedores (SOLICITADO JEAN)",
+      "ADM",
+      {
+        "2026-08": "R",
+        "2027-01": "P"
+      }
+    ],
+    [
+      "Follow-up e Acompanhamento dos Planos de Ações ADM 2024/2025/2026",
+      "ADM",
+      {
+        "2025-07": "✔",
+        "2025-12": "✔",
+        "2026-06": "✔",
+        "2026-12": "P",
+        "2027-06": "P",
+        "2027-12": "P"
+      }
+    ],
+    [
+      "3.1 - Auditoria dos processos de SESMT nas Obras (EPIs e EPCs) e Aplicação das NRs (AI-007_2025)",
+      "Obras",
+      {
+        "2025-09": "P",
+        "2025-11": "✔"
+      }
+    ],
+    [
+      "3.2 - Auditoria dos processos de Treinamentos de SESMT (FG e Terceirizados) (AI-007_2025)",
+      "Obras",
+      {
+        "2025-11": "✔"
+      }
+    ],
+    [
+      "3.3 - Auditoria dos Contratos de Terceirizados, Adendos e Distratos ocorridos em 2025 (AI-008_2026)",
+      "Obras",
+      {
+        "2026-02": "✔"
+      }
+    ],
+    [
+      "3.4 - Auditoria dos processos de Medição de Obras BLUE VIEW, ICONIC e TITANIUM (AI-010_2026)",
+      "Obras",
+      {
+        "2026-05": "✔"
+      }
+    ],
+    [
+      "3.5 - Auditoria dos processos de Medição de Obras IMPERIUM e GARDEN PARK (AI-013_2026)",
+      "Obras",
+      {
+        "2026-09": "✔"
+      }
+    ],
+    [
+      "3.6 - Auditoria dos processos de Medição de Obras NORTH TOWER e SENNA TOWER (AI-017_2026)",
+      "Obras",
+      {
+        "2026-10": "✔"
+      }
+    ],
+    [
+      "3.7 - Auditoria Interna - Controle do Estoque Ferramental",
+      "Obras",
+      {
+        "2026-10": "A"
+      }
+    ],
+    [
+      "3.8 - Auditoria dos processos do Cronograma Avanço Físico-Financeiro (NORTH TOWER)",
+      "Obras",
+      {
+        "2026-07": "R",
+        "2026-10": "A"
+      }
+    ],
+    [
+      "Follow-up e Acompanhamento dos Planos de Ações Obras 2024/2025/2026",
+      "Obras",
+      {
+        "2025-12": "✔",
+        "2026-06": "✔",
+        "2026-12": "P",
+        "2027-06": "P",
+        "2027-12": "P"
+      }
+    ],
+    [
+      "4.1 - AR-001-2025 - Serviço de Pintura Helicóptero B4",
+      "Demandas",
+      {
+        "2025-08": "✔"
+      }
+    ],
+    [
+      "4.2 - AR-002-2025 - Móveis Planejados Blue Coast",
+      "Demandas",
+      {
+        "2025-12": "✔"
+      }
+    ],
+    [
+      "4.3 - AR-003-2025 - Serviço de Manutenção Helicóptero B4",
+      "Demandas",
+      {
+        "2025-12": "✔"
+      }
+    ],
+    [
+      "4.4 - AR-004-2026 - Instalação da Fachada Ventilada do Blue Coast",
+      "Demandas",
+      {
+        "2026-01": "✔"
+      }
+    ],
+    [
+      "4.5 - AR-005-2026 - Instalação das Esquadrias de Alumínio do Blue Coast",
+      "Demandas",
+      {
+        "2026-01": "✔"
+      }
+    ],
+    [
+      "4.6 - AR-006-2026 - Análise do Contrato entre Roga Gigante (BC BIG WHEEL x FG)",
+      "Demandas",
+      {
+        "2026-02": "✔"
+      }
+    ],
+    [
+      "4.7 - AR-007-2026 - Análise do Contrato e Controles Internos (TV Ind._RIC x METRA PUBLICIDADE x FG)",
+      "Demandas",
+      {
+        "2026-03": "✔"
+      }
+    ],
+    [
+      "4.8 - AR-008-2026 - Análise do Rateio de Mídia e Propaganda MKT (FG Holding e Senna)",
+      "Demandas",
+      {
+        "2026-07": "✔"
+      }
+    ],
+    [
+      "4.9 - Análise Homologação de Clientes PF/PJ (Análise de crédito)",
+      "Demandas",
+      {
+        "2026-08": "✔"
+      }
+    ],
+    [
+      "4.10 - AR-010-2026 - Fiscalização Móveis Planejados SAPPHIRE TOWER (Shafts e Áreas de Laser)",
+      "Demandas",
+      {
+        "2026-10": "A"
+      }
+    ],
+    [
+      "4.11 - AR-011-2026 - Fiscalização Móveis Planejados SCENARIUM (Shafts e Áreas de Laser)",
+      "Demandas",
+      {
+        "2026-12": "R",
+        "2027-01": "P"
+      }
+    ],
+    [
+      "4.12 - AR-012-2026 - Fiscalização da Entrega das Chaves clientes SAPPHIRE TOWER (foco na qualidade)",
+      "Demandas",
+      {
+        "2026-10": "A"
+      }
+    ],
+    [
+      "5.1 - Mapeamento dos Riscos Operacionais",
+      "Gerenciamento de Riscos",
+      {
+        "2025-12": "✔",
+        "2026-06": "✔",
+        "2026-12": "P",
+        "2027-06": "P",
+        "2027-12": "P"
+      }
+    ],
+    [
+      "5.2 - Mapeamento dos Riscos Estratégicos",
+      "Gerenciamento de Riscos",
+      {
+        "2025-12": "P",
+        "2026-12": "P",
+        "2027-06": "P",
+        "2027-12": "P"
+      }
+    ]
+  ],
+  "schedule2027": [
+    [
+      "1. Planejamento dos Trabalhos de AI",
+      "Governança",
+      "Gestão – semestral",
+      [
+        "2027-01",
+        "2027-07"
+      ]
+    ],
+    [
+      "2.1 - AI - Contratos de Permuta – Terrenos - Incorporação – Outorgas (documentação e cláusulas contratuais)",
+      "ADM",
+      "Novo escopo",
+      [
+        "2027-01"
+      ]
+    ],
+    [
+      "2.2 - AI - Assistência Técnica – Contratação de Serviços",
+      "ADM",
+      "Reavaliação 2",
+      [
+        "2027-02"
+      ]
+    ],
+    [
+      "2.3 - AI - SUP – Homologação de Fornecedores (Manual x Sistema)",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-03"
+      ]
+    ],
+    [
+      "2.4 - AI - Controle Interno Patrimonial – Depósitos CENTRAL, PAT e MKT",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-03"
+      ]
+    ],
+    [
+      "2.5 - AI - Marketing – Contratação de Serviços e Insumos",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-04"
+      ]
+    ],
+    [
+      "2.6 - AI - APROBRAVA – 1º trimestre 2027",
+      "ADM",
+      "Recorrente anual",
+      [
+        "2027-05"
+      ]
+    ],
+    [
+      "2.7 - AD - Homologação de Clientes – Análise de Crédito Clientes (Jurídico)",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-06"
+      ]
+    ],
+    [
+      "2.8 - AI - Relacionamento com o Cliente (Jornada do cliente – Sensações)",
+      "ADM",
+      "Novo escopo",
+      [
+        "2027-07"
+      ]
+    ],
+    [
+      "2.9 - AI - Tecnologia da Informação (Equipe, especialistas - serviços e ativos)",
+      "ADM",
+      "Novo escopo",
+      [
+        "2027-08"
+      ]
+    ],
+    [
+      "2.10 - AI - Suprimentos – Contratação de Serviços e Insumos (Travas de segurança)",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-09"
+      ]
+    ],
+    [
+      "2.11 - AI - Terrenos – Limpeza, Segurança e Documentação",
+      "ADM",
+      "Novo escopo",
+      [
+        "2027-10"
+      ]
+    ],
+    [
+      "2.12 - AD - Roda FG – Acompanhamento Contratual",
+      "ADM",
+      "Reavaliação 1",
+      [
+        "2027-11"
+      ]
+    ],
+    [
+      "Follow-up e Acompanhamento dos Planos de Ações ADM 2027",
+      "ADM",
+      "Gestão – semestral",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ],
+    [
+      "3.1 - AD - Fiscalização dos Móveis Planejados – Scenarium e Titanium",
+      "Obras",
+      "Novo escopo",
+      [
+        "2027-01"
+      ]
+    ],
+    [
+      "3.2 - AI - SESMT nas Obras – EPIs, EPCs e Aplicação das NRs (Amostragem Por obra)",
+      "Obras",
+      "Reavaliação 1",
+      [
+        "2027-02"
+      ]
+    ],
+    [
+      "3.3 - AI - Processos de Compra EPIs – SESMT",
+      "Obras",
+      "Novo escopo",
+      [
+        "2027-04"
+      ]
+    ],
+    [
+      "3.4 - AI - Talls – Entregas das Demandas em Contrato",
+      "Obras",
+      "Novo escopo",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ],
+    [
+      "3.5 - AD - Esquadrias e Fachada Ventilada – Amostragem conforme Obra",
+      "Obras",
+      "Novo escopo",
+      [
+        "2027-11"
+      ]
+    ],
+    [
+      "3.6 - AI - Cronograma de Avanço Físico-Financeiro – Orçamentos – North Tower",
+      "Obras",
+      "Recorrente mensal",
+      [
+        "2027-01",
+        "2027-02",
+        "2027-03",
+        "2027-04",
+        "2027-05",
+        "2027-06",
+        "2027-07",
+        "2027-08",
+        "2027-09",
+        "2027-10",
+        "2027-11",
+        "2027-12"
+      ]
+    ],
+    [
+      "3.7 - AI - Medição de Obras – Todas as Obras em Andamento (previsto a cada 60 dias)",
+      "Obras",
+      "Recorrente bimestral",
+      [
+        "2027-02",
+        "2027-04",
+        "2027-06",
+        "2027-08",
+        "2027-10",
+        "2027-12"
+      ]
+    ],
+    [
+      "3.8 - AI - Controle do Estoque nas Obras/Ferramental (Por amostragem)",
+      "Obras",
+      "Recorrente semestral",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ],
+    [
+      "Follow-up e Acompanhamento dos Planos de Ações Obras 2027",
+      "Obras",
+      "Gestão – semestral",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ],
+    [
+      "4.1 - Demandas da Alta Administração – incluídas conforme solicitação ao longo de 2027",
+      "Demandas",
+      "Sob demanda",
+      []
+    ],
+    [
+      "5.1 - Mapeamento dos Riscos Operacionais",
+      "Gerenciamento de Riscos",
+      "Gestão – semestral",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ],
+    [
+      "5.2 - Mapeamento dos Riscos Estratégicos",
+      "Gerenciamento de Riscos",
+      "Gestão – semestral",
+      [
+        "2027-06",
+        "2027-12"
+      ]
+    ]
+  ]
+}
