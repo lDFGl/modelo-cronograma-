@@ -74,7 +74,16 @@ async function initialize(){
     const stored = localStorage.getItem(STORAGE_KEY);
     if(stored){
       const parsed = JSON.parse(stored);
-      works = Array.isArray(parsed.works) ? parsed.works : initial;
+      works = Array.isArray(parsed.works) ? parsed.works : [...initial];
+      // Migração segura: inclui registros históricos que chegaram em versões
+      // posteriores do arquivo-fonte, sem sobrescrever itens já editados no navegador.
+      const existingIds = new Set(works.map(item=>item.id));
+      const missingHistorical = initial.filter(item=>!existingIds.has(item.id));
+      if(missingHistorical.length){
+        works = [...works,...missingHistorical];
+        persist();
+        showToast(missingHistorical.length+" serviço(s) histórico(s) ausente(s) foram incorporados ao cronograma.");
+      }
     }else{
       works = initial;
       persist();
