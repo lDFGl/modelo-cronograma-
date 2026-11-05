@@ -157,6 +157,7 @@ function renderSchedules(){
 }
 
 function populateCalendarFilters(){
+  if(!$("#calendar-year")||!$("#calendar-month")||!$("#calendar-area"))return;
   const years=new Set();
   works.forEach(w=>{
     Object.keys(w.months||{}).forEach(m=>years.add(m.slice(0,4)));
@@ -204,13 +205,14 @@ function endOfWork(w){
   return value?new Date(value+"T23:59:59"):new Date(0);
 }
 function renderCalendar(){
-  if(!$("#calendar-grid"))return;
+  if(!$("#calendar-grid")||!$("#calendar-year")||!$("#calendar-month")||!$("#calendar-area")||!$("#calendar-future-only"))return;
   const year=Number($("#calendar-year").value),month=Number($("#calendar-month").value);
   if(!year||!month)return;
   const key=String(year)+"-"+String(month).padStart(2,"0");
   const items=calendarMonthWorks();
   const first=new Date(year,month-1,1),lastDay=new Date(year,month,0).getDate(),offset=first.getDay();
-  const todayKey=new Date().toISOString().slice(0,10);
+  const localToday=new Date();
+  const todayKey=localToday.getFullYear()+"-"+String(localToday.getMonth()+1).padStart(2,"0")+"-"+String(localToday.getDate()).padStart(2,"0");
   const dayCounts={};
   items.forEach(w=>{
     if(w.calendarDate.slice(0,7)===key){
@@ -229,7 +231,7 @@ function renderCalendar(){
     const count=dayCounts[day]||0;
     cells+='<div class="calendar-day'+(date===todayKey?' today-day':'')+(count?' has-events':'')+'"><span class="day-number">'+day+'</span>'+(count?'<span class="day-count">'+count+' programação(ões)</span>':'')+'</div>';
   }
-  const totalCells=offset+lastDay;
+  let totalCells=offset+lastDay;
   while(totalCells%7!==0){cells+='<div class="calendar-day outside"></div>';totalCells++;}
   $("#calendar-grid").innerHTML=cells;
   $("#calendar-title").textContent=MONTH_NAMES[month-1].charAt(0)+MONTH_NAMES[month-1].slice(1).toLowerCase()+" de "+year;
