@@ -15,6 +15,7 @@ let works = [];
 let currentView = "dashboard";
 let currentWorkFilter = "all";
 let timelineYear = String(new Date().getFullYear());
+let selectedTimelineMark = "P";
 let toastTimer;
 
 const $ = (selector) => document.querySelector(selector);
@@ -127,10 +128,11 @@ function filteredWorks(){
 }
 
 function workCategory(w){
-  const code=(w.code||((w.title.match(/\b(?:AR|AD)-?\d{3}[_/-]?\d{4}\b/i)||[])[0])||"").toUpperCase();
-  if(/^AR-|^AD-/.test(code)||w.area==="Demandas"||/Demandas da Alta Administração/i.test(w.title))return "alta";
-  if(/^AI-/.test(code)||/auditoria/i.test(w.title))return "ai";
-  if(/^Follow-up/i.test(w.title))return "follow";
+  const title=String(w.title||"");
+  const code=String(w.code||"").toUpperCase();
+  if(/\b(?:AR|AD)\b/i.test(title)||/^(?:AR|AD)(?:-|\b)/.test(code)||w.area==="Demandas"||/Demandas da Alta Administração/i.test(title))return "alta";
+  if(/\bAI\b/i.test(title)||/^AI(?:-|\b)/.test(code)||/auditoria/i.test(title))return "ai";
+  if(/^Follow-up/i.test(title))return "follow";
   return "other";
 }
 function categoryLabel(category){return category==="alta"?"ANÁLISES DA ALTA DIREÇÃO (AR / AD)":category==="ai"?"AUDITORIAS INTERNAS (AI)":category==="follow"?"FOLLOW-UPS E PLANOS DE AÇÃO":"DEMAIS ATIVIDADES";}
@@ -139,12 +141,12 @@ function renderTimeline(){
   const year=timelineYear,groups=["alta","ai","follow","other"],months=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
   const rows=works.filter(w=>Object.keys(w.months||{}).some(m=>m.startsWith(year))).sort(prioritySort),board=$("#timeline-board");
   if(!board)return;
+  document.querySelectorAll("[data-mark-select]").forEach(btn=>btn.classList.toggle("selected",btn.dataset.markSelect===selectedTimelineMark));
   board.innerHTML=groups.map(group=>{
     const items=rows.filter(w=>workCategory(w)===group);if(!items.length)return "";
-    return '<section class="timeline-group"><div class="timeline-group-title '+(group==="alta"?"priority-high":group==="ai"?"priority-ai":group==="follow"?"priority-follow":"")+'">'+categoryLabel(group)+'<span class="group-count">'+items.length+' trabalho(s)</span></div><table class="timeline-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map(m=>'<th>'+m+'</th>').join("")+'</tr></thead><tbody>'+items.map(w=>'<tr><td><div class="timeline-work-name">'+escapeHtml(w.title)+'</div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[w.area]||w.area)+(w.owner?" · "+escapeHtml(w.owner):"")+'</div></td>'+months.map((m,i)=>{const mark=(w.months||{})[year+"-"+String(i+1).padStart(2,"0")];const cls=mark==="✔"?"done":mark||"";return '<td>'+(mark?'<span class="timeline-mark '+cls+'">'+escapeHtml(mark)+'</span>':'<span class="timeline-empty">·</span>')+'</td>';}).join("")+'</tr>').join("")+'</tbody></table></section>';
+    return '<section class="timeline-group"><div class="timeline-group-title '+(group==="alta"?"priority-high":group==="ai"?"priority-ai":group==="follow"?"priority-follow":"")+'">'+categoryLabel(group)+'<span class="group-count">'+items.length+' trabalho(s)</span></div><table class="timeline-table"><thead><tr><th>TRABALHO / ÁREA</th>'+months.map(m=>'<th>'+m+'</th>').join("")+'</tr></thead><tbody>'+items.map(w=>'<tr><td><div class="timeline-work-name">'+escapeHtml(w.title)+'</div><div class="timeline-work-meta">'+escapeHtml(AREA_LABELS[w.area]||w.area)+(w.owner?" · "+escapeHtml(w.owner):"")+'</div></td>'+months.map((m,i)=>{const key=year+"-"+String(i+1).padStart(2,"0"),mark=(w.months||{})[key],cls=mark==="✔"?"done":mark==="-"?"none":mark||"";return '<td><button type="button" class="timeline-mark '+cls+(mark?"":" empty")+'" data-timeline-cell="'+escapeHtml(w.id)+'" data-month="'+key+'" title="'+(mark?"Alterar marcação "+mark:"Adicionar marcação")+'">'+(mark?escapeHtml(mark):"＋")+'</button></td>';}).join("")+'</tr>').join("")+'</tbody></table></section>';
   }).join("")||'<div class="empty-state">Não há programações mensais registradas para '+year+'.</div>';
 }
-
 function renderAll(){renderDashboard();renderTimeline();renderSchedules();renderHistory();}
 function renderDashboard(){
   const total=works.length;
@@ -351,6 +353,20 @@ function exportCsv(){
   downloadFile("cronogramas-fg.csv",csv,"text/csv;charset=utf-8");showToast("CSV exportado.");
 }
 document.addEventListener("click",event=>{
+  const markSelector=event.target.closest("[data-mark-select]");
+  if(markSelector){selectedTimelineMark=markSelector.dataset.markSelect;renderTimeline();return;}
+  const timelineCell=event.target.closest("[data-timeline-cell]");
+  if(timelineCell){
+    const work=works.find(item=>item.id===timelineCell.dataset.timelineCell);
+    if(!work)return;
+    work.months=work.months||{};
+    const month=timelineCell.dataset.month;
+    if(selectedTimelineMark==="")delete work.months[month];else work.months[month]=selectedTimelineMark;
+    const latest=sortedMonths(work.months).slice(-1)[0];
+    if(latest){const m=work.months[latest];work.status=m==="✔"?"concluido":m==="A"?"andamento":m==="R"?"replanejado":m==="D"?"demanda":m==="P"?"planejamento":work.status;}
+    persist();renderAll();showToast("Programação mensal atualizada.");return;
+  }
+
   const workFilter=event.target.closest("[data-work-filter]");if(workFilter){currentWorkFilter=workFilter.dataset.workFilter;renderSchedules();return;}
   const view=event.target.closest("[data-view]");if(view){setView(view.dataset.view);return;}
   if(event.target.closest("#new-work")||event.target.closest("#new-work-2")){openModal();return;}
