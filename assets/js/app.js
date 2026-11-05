@@ -60,7 +60,7 @@ function buildInitialData(data){
 }
 async function initialize(){
   try{
-    const response = await fetch("data/historico.json?v=20261105-7",{cache:"no-store"});
+    const response = await fetch("data/historico.json?v=20261105-8",{cache:"no-store"});
     if(!response.ok) throw new Error("Não foi possível carregar o histórico.");
     sourceData = await response.json();
   }catch(error){
@@ -189,9 +189,34 @@ function renderTimeline(){
     return '<tr class="timeline-work-row"><td class="timeline-title-cell">'+name+'</td>'+typeCell+cells+'</tr>';
   };
   const renderSheet=key=>{
-    const rows=structure[key]||[];
-    if(!rows.length)return "";
+    const sourceRows=structure[key]||[];
+    if(!sourceRows.length)return "";
     const isGeneral=key!=="2027";
+    const rows=isGeneral?(()=>{
+      const filtered=[];
+      const hasYearMark=entry=>{
+        const work=findWork(entry);
+        return !!work&&Object.entries(work.months||{}).some(([month,mark])=>month.startsWith(key+"-")&&mark!=="-");
+      };
+      for(let i=0;i<sourceRows.length;){
+        const row=sourceRows[i];
+        if(row[0]==="section"){
+          const section=row;
+          const sectionWorks=[];
+          let j=i+1;
+          while(j<sourceRows.length&&sourceRows[j][0]!=="section"){
+            if(hasYearMark(sourceRows[j]))sectionWorks.push(sourceRows[j]);
+            j++;
+          }
+          if(sectionWorks.length)filtered.push(section,...sectionWorks);
+          i=j;
+        }else{
+          if(hasYearMark(row))filtered.push(row);
+          i++;
+        }
+      }
+      return filtered;
+    })():sourceRows;
     const keys=isGeneral?monthKeysForYear(key):monthKeys2027;
     const workCount=rows.filter(row=>row[0]==="work").length;
     let header;
@@ -211,7 +236,7 @@ function renderTimeline(){
       }).join("");
     }
     const title=isGeneral?"CRONOGRAMA GERAL FG "+key:"CRONOGRAMA FG 2027";
-    const subtitle=isGeneral?"40 atividades · 12 meses · ordem da planilha original":"26 atividades · 12 meses · tipo de trabalho conforme a planilha";
+    const subtitle=isGeneral?workCount+" atividades · 12 meses · serviços programados no ano":"26 atividades · 12 meses · tipo de trabalho conforme a planilha";
     return '<section class="timeline-sheet"><div class="timeline-sheet-heading"><div><h3>'+title+'</h3><p>'+subtitle+'</p></div><span class="timeline-sheet-count">'+(workCount+manual.length)+' atividades</span></div><div class="timeline-sheet-scroll"><table class="timeline-table timeline-structured-table '+(isGeneral?"general-sheet":"year-2027-sheet")+'">'+header+'<tbody>'+body+'</tbody></table></div></section>';
   };
   board.innerHTML=sheetKeys.map(renderSheet).join("")||'<div class="empty-box">Nenhum cronograma encontrado.</div>';
