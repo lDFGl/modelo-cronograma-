@@ -95,6 +95,10 @@ function showToast(message){
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),3000);
 }
 function populateAreaFilter(){
+  const selectedYear=$("#filter-year")?.value||"";
+  const years=new Set();works.forEach(w=>{Object.keys(w.months||{}).forEach(m=>years.add(m.slice(0,4)));if(w.start)years.add(w.start.slice(0,4));if(w.end)years.add(w.end.slice(0,4));});
+  $("#filter-year").innerHTML='<option value="">Todos os anos</option>'+[...years].sort().map(y=>'<option value="'+y+'">'+y+'</option>').join("");
+  $("#filter-year").value=selectedYear;
   $("#filter-area").innerHTML='<option value="">Todas as áreas</option>'+AREAS.map(a=>'<option value="'+escapeHtml(a)+'">'+escapeHtml(AREA_LABELS[a]||a)+'</option>').join("");
 }
 function setView(view){
@@ -240,10 +244,10 @@ function renderCalendar(){
 function shiftCalendarMonth(delta){
   let year=Number($("#calendar-year").value),month=Number($("#calendar-month").value)+delta;
   if(month<1){month=12;year--;}if(month>12){month=1;year++;}
-  $("#calendar-year").value=String(year);
   if(![...$("#calendar-year").options].some(o=>o.value===String(year))){
     const option=document.createElement("option");option.value=String(year);option.textContent=String(year);$("#calendar-year").append(option);
   }
+  $("#calendar-year").value=String(year);
   $("#calendar-month").value=String(month).padStart(2,"0");renderCalendar();
 }
 
@@ -279,7 +283,7 @@ function saveWork(event){
   }else if(start){const key=start.slice(0,7);if(!months[key])months[key]="P";}
   const item={id:id||makeId(),title:$("#work-name").value.trim(),area:$("#work-area").value,type:$("#work-type").value,status:$("#work-status").value,priority:$("#work-priority").value,start,end,owner:$("#work-owner").value.trim(),code:$("#work-code").value.trim(),notes:$("#work-notes").value.trim(),months,source:previous?.source||"cadastro",lockedSource:false};
   if(previous){works=works.map(w=>w.id===id?item:w);}else{works.unshift(item);}
-  persist();closeModal();renderAll();showToast(previous?"Trabalho atualizado.":"Trabalho cadastrado.");
+  persist();closeModal();populateAreaFilter();populateCalendarFilters();renderAll();showToast(previous?"Trabalho atualizado.":"Trabalho cadastrado.");
 }
 function deleteWork(id){
   const work=works.find(w=>w.id===id); if(!work)return;
@@ -299,7 +303,7 @@ function restoreBackup(file){
       const imported=Array.isArray(parsed)?parsed:parsed.works;
       if(!Array.isArray(imported)||!imported.every(w=>w&&typeof w.title==="string"&&typeof w.area==="string"))throw new Error("Formato inválido");
       if(!confirm("A restauração substituirá os dados locais atuais por "+imported.length+" registro(s). Deseja continuar?"))return;
-      works=imported;persist();populateAreaFilter();renderAll();showToast("Backup restaurado com sucesso.");
+      works=imported;persist();populateAreaFilter();populateCalendarFilters();renderAll();showToast("Backup restaurado com sucesso.");
     }catch(error){showToast("Arquivo inválido. Selecione um backup JSON gerado pelo sistema.");}
     $("#restore-file").value="";
   };
