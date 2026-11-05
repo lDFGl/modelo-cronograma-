@@ -45,7 +45,18 @@ function buildInitialData(data){
     months.forEach(key=>monthMap[key]="P");
     list.push({id:"legacy-2027-"+index,title,area,type,status:"planejamento",priority:"media",months:monthMap,owner:"",code:(title.match(/\b(?:AI|AR|AD)-?\d{3}[_/-]?\d{4}\b/i)||[])[0]||"",notes:"Planejamento conforme cronograma 2027 da planilha original. Marcações P preservadas.",source:"2027",lockedSource:true});
   });
-  return list;
+  const consolidated = new Map();
+  list.forEach(item=>{
+    const key = item.area + "|" + String(item.title).normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+    if(consolidated.has(key)){
+      const existing = consolidated.get(key);
+      existing.months = {...(existing.months||{}),...(item.months||{})};
+      existing.type = item.type || existing.type;
+      existing.source = "2025-2027 + 2027";
+      existing.notes = (existing.notes||"") + " | Registro equivalente também identificado na aba específica de 2027.";
+    }else consolidated.set(key,item);
+  });
+  return [...consolidated.values()];
 }
 async function initialize(){
   try{
