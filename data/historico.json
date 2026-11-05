@@ -9,56 +9,6 @@
     "✔": "Concluído",
     "-": "Marcação histórica sem atividade prevista"
   },
-  "legacy2023": [
-    {
-      "area": "Compliance",
-      "unit": "UC 05 - Compliance",
-      "year": 2023,
-      "stages": [
-        "Reunião de abertura",
-        "Mobilização da equipe",
-        "Planejamento",
-        "Execução",
-        "Minuta",
-        "Alinhamento de resultados",
-        "Apresentação dos trabalhos",
-        "Relatório final"
-      ],
-      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
-    },
-    {
-      "area": "Governança",
-      "unit": "UC 06 - Governança",
-      "year": 2023,
-      "stages": [
-        "Reunião de abertura",
-        "Mobilização da equipe",
-        "Planejamento",
-        "Execução",
-        "Minuta",
-        "Alinhamento de resultados",
-        "Apresentação dos trabalhos",
-        "Relatório final"
-      ],
-      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
-    },
-    {
-      "area": "Gerenciamento de Riscos",
-      "unit": "UC 07 - Gerenciamento de Riscos e Controles Internos",
-      "year": 2023,
-      "stages": [
-        "Reunião de abertura",
-        "Mobilização da equipe",
-        "Planejamento",
-        "Execução",
-        "Minuta",
-        "Alinhamento de resultados",
-        "Apresentação dos trabalhos",
-        "Relatório final"
-      ],
-      "note": "A planilha contém etapas e cabeçalhos de datas, mas não contém marcações preenchidas de previsto/realizado."
-    }
-  ],
   "schedule2025_2027": [
     [
       "1. Planejamento dos Trabalhos de AI",
