@@ -76,9 +76,8 @@ async function initialize(){
       const normalize = value => String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
       const identity = item => String(item.area||"") + "|" + normalize(item.title);
       const byId = new Map(storedWorks.map(item=>[item.id,item]));
-      const byIdentity = new Map(storedWorks.filter(item=>item.lockedSource).map(item=>[identity(item),item]));
       const reconciled = initial.map(sourceItem=>{
-        const previous = byId.get(sourceItem.id) || byIdentity.get(identity(sourceItem));
+        const previous = byId.get(sourceItem.id);
         if(!previous) return sourceItem;
         return {
           ...sourceItem,
